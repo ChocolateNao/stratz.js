@@ -1,0 +1,36 @@
+{
+  "name": "stratz.js",
+  "version": "1.0.0",
+  "description": "A Node.js STRATZ REST API wrapper",
+  "main": "index.js",
+  "types": "./types/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChocolateNao/stratz.js.git"
+  },
+  "keywords": [
+    "stratz",
+    "dota",
+    "dota2",
+    "wrapper",
+    "api",
+    "rest-api"
+  ],
+  "author": "ChocolateNao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChocolateNao/stratz.js/issues"
+  },
+  "homepage": "https://github.com/ChocolateNao/stratz.js#readme",
+  "devDependencies": {
+    "@types/node": "^20.3.3",
+    "jest": "^29.5.0",
+    "jsdoc-to-markdown": "^8.0.0"
+  }
+}
