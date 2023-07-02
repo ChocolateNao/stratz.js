@@ -65,12 +65,17 @@ export default class Stratz {
             }).end();
         });
     }
+
     /**
      * Latest Dota 2 version ID. 
      * @internal
-     * @return {Promise<number>} - Promise object that resolves to the latest Dota 2 version ID. 
+     * @param {number} [gameVersionId = effectiveVersionId] - An optional GameVersion ID that is passed to this helper.
+     * @return {Promise<number>} Promise object that resolves to the latest Dota 2 version ID. 
      */
-    private async _getLatestVersionId(): Promise<number> {
+    private async _getEffectiveVersionId(gameVersionId?: number): Promise<number> {
+        if (gameVersionId) {
+            return gameVersionId;
+        }
         if (this._latestVersionID !== null) {
             return Promise.resolve(this._latestVersionID as number);
         }
@@ -83,13 +88,13 @@ export default class Stratz {
 
     /**
      * All information retaining to the Dota 2 Abilities by Game Version.
-     * @param {number} gameVersionId - Game Version Id matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
-     * @param {number} languageId - Language for data to come back. If not specified, the response will contain results in English.
-     * @returns Promise object that resolves to JSON response represented by GET /Ability.
+     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
+     * @param {number} [languageId = 0] - Language for data to come back. If not specified, the response will contain results in English.
+     * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Ability.
      */
     async getAbility(gameVersionId?: number, languageId: number = 0): Promise<any> {
-        const latestVersionId = await this._getLatestVersionId();
-        return this._apiReq(`/Ability?gameVersionId=${gameVersionId ? gameVersionId : latestVersionId}&languageId=${languageId}`, 'GET');
+        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
+        return this._apiReq(`/Ability?gameVersionId=${effectiveVersionId}&languageId=${languageId}`, 'GET');
     }
 
     /**
@@ -126,33 +131,34 @@ export default class Stratz {
 
     /**
      * The current list of Heroes found in the Dota 2 client. Includes all base stats plus additional information on the hero.
-     * @param {number} gameVersionId - Returns the list of heroes for the given GameVersionId. If not specified, the latest version data will be presented.
-     * @param {number} languageId - Language for data to come back. If not specified, the response will contain results in English.
-     * @returns Promise object that resolves to JSON response represented by GET /Hero.
+     * @param {number} [gameVersionId = effectiveVersionId] - Returns the list of heroes for the given GameVersionId. If not specified, the latest version data will be presented.
+     * @param {number} [languageId = 0] - Language for data to come back. If not specified, the response will contain results in English.
+     * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Hero.
      */
     async getHero(gameVersionId?: number, languageId: number = 0): Promise<any> {
-        const latestVersionId = await this._getLatestVersionId();
-        return this._apiReq(`/Hero?gameVersionId=${gameVersionId ? gameVersionId : latestVersionId}&languageId=${languageId}`, 'GET');
+        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
+        return this._apiReq(`/Hero?gameVersionId=${effectiveVersionId}&languageId=${languageId}`, 'GET');
     }
 
     /**
      * List of Items in the Dota 2 Game and details about each.
-     * @param {number} gameVersionId - Game Version Id matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
-     * @param {number} languageId - Language for data to come back. If not specified, the response will contain results in English.
-     * @returns Promise object that resolves to JSON response represented by GET /Item.
+     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
+     * @param {number} [languageId = 0] - Language for data to come back. If not specified, the response will contain results in English.
+     * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Item.
      */
     async getItem(gameVersionId?: number, languageId: number = 0): Promise<any> {
-        const latestVersionId = await this._getLatestVersionId();
-        return this._apiReq(`/Item?gameVersionId=${gameVersionId ? gameVersionId : latestVersionId}&languageId=${languageId}`, 'GET');
+        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
+        return this._apiReq(`/Item?gameVersionId=${effectiveVersionId}&languageId=${languageId}`, 'GET');
     }
 
     /**
-     * More specific details about the Item Id.
-     * @param {number} gameVersionId - Game Version Id matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
-     * @returns Promise object that resolves to JSON response represented by GET /Item/{id}.
+     * More specific details about the Item ID.
+     * @param {number} id - The Item ID requested. `Not optional.`
+     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
+     * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Item/{id}.
      */
     async getItemById(id: number, gameVersionId?: number): Promise<any> {
-        const latestVersionId = await this._getLatestVersionId();
-        return this._apiReq(`/Item/${id}?gameVersionId=${gameVersionId ? gameVersionId : latestVersionId}`, 'GET');
+        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
+        return this._apiReq(`/Item/${id}?gameVersionId=${effectiveVersionId}`, 'GET');
     }
 }
