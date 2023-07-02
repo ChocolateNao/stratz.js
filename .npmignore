@@ -15,6 +15,7 @@ node_modules/
 package-lock.json
 tsconfig.json
 DOCS.md
+notes.txt
 
 # Build
 *.tgz

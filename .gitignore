@@ -131,3 +131,6 @@ dist
 
 # Compiled files
 lib/
+
+# Notes
+notes.txt
