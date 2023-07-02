@@ -1,0 +1,20 @@
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+node_modules/
+
+# Project files
+/scripts/
+/src/
+.gitignore
+.markdownlint.json
+package-lock.json
+tsconfig.json
+DOCS.md
+
+# Build
+*.tgz
