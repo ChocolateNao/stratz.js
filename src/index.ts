@@ -1,20 +1,20 @@
 import https from 'https';
 
 /**
- * Provides access to the STRATZ API.
+ * Provides access to the STRATZ API. This is the first thing you do to start.
  */
 export default class Stratz {
-    private _apiToken: string;
+    apiToken: string;
     private _host: string;
     private _basePath: string;
     private _latestVersionID: number | null;
 
     /**
-     * Create a new instance of this wrapper.
-     * @param {string} apiToken - API token. You can get yours for free at https://stratz.com/api.
+     * Create a new instance of STRATZ REST API wrapper. This is the first thing you do to start.
+     * @param {string} apiToken - Your API token. You can get yours for free at https://stratz.com/api.
      */
     constructor(apiToken: string) {
-        this._apiToken = apiToken;
+        this.apiToken = apiToken;
         this._host = 'api.stratz.com';
         this._basePath = '/api/v1';
         this._latestVersionID = null;
@@ -29,7 +29,7 @@ export default class Stratz {
      */
     private _apiReq(path: string, method: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            if (!this._apiToken) {
+            if (!this.apiToken) {
                 reject('No token provided.');
             }
 
@@ -40,7 +40,7 @@ export default class Stratz {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this._apiToken}`
+                    'Authorization': `Bearer ${this.apiToken}`
                 }
             }
 
@@ -161,4 +161,16 @@ export default class Stratz {
         const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
         return this._apiReq(`/Item/${id}?gameVersionId=${effectiveVersionId}`, 'GET');
     }
+
+    /**
+     * All information retaining to the Dota 2 Npcs by Game Version.
+     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching STRATZ GameVersion endpoint. If not specified, the latest version data will be presented.
+     * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Npc.
+     */
+    async getNpc(gameVersionId?: number): Promise<any> {
+        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
+        return this._apiReq(`/Npc?gameVersionId=${effectiveVersionId}`, 'GET');
+    }
+
+
 }
