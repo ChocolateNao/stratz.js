@@ -19,7 +19,7 @@
     "build": "npm run clean && npm run compile && npm run docs",
     "clean": "rm -rf lib && rm DOCS.md",
     "watch": "npm run build -- --watch src",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "docs": "jsdoc2md ./lib/index.js --separators > DOCS.md",
     "compile": "tsup ./src/index.ts --format cjs,esm --dts --outDir ./lib"
   },
