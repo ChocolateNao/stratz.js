@@ -16,6 +16,8 @@ package-lock.json
 tsconfig.json
 DOCS.md
 notes.txt
+.env
+.env.example
 
 # Build
 *.tgz
