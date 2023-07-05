@@ -178,6 +178,28 @@ export class Stratz {
         const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
         return this._apiReq(`/Npc`, 'GET', { gameVersionId: effectiveVersionId });
     }
+
+    /**
+     * Returns the list of Leagues limited by the queries.
+     * @param {Array<number>} [tier] - The type of league your requested limit by Dota 2 filter of Tier. Accepted : 1 - Amateur, 2 - Professional, 3 - DPC Minors (Premium), 4 - DPC Majors (Premium) <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+     * @param {number} [skip] - The amount to skip before returning results.
+     * @param {number} [take] - The amount of results to take. <br/>`Max amount 100`.
+     * @param {boolean} [requireImage] - If the league must have an image to return.
+     * @param {string} [orderBy] - The determiantion of the order of the results returned. Accepted inputs are `LastMatchTime` and `Id`. <br/>Default is `LastMatchTime`.
+     * @returns Promise object that resolves to JSON response represented by GET /League.
+     */
+    getLeague(tier?: Array<number>, skip?: number, take?: number, requireImage?: boolean, orderBy?: string): Promise<any> {
+        return this._apiReq(`/league`, 'GET', { tier, skip, take, requireImage, orderBy });
+    }
+
+    /**
+     * Return more data about a specific League
+     * @param {number} id - League ID. <br/>`Required.`
+     * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /League/{id}.
+     */
+    getLeagueById(id: number): Promise<any> {
+        return this._apiReq(`/league/${id}`, 'GET');
+    }
 }
 
 module.exports = { Stratz };
