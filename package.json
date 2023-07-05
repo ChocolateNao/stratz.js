@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "npm run clean && npm run compile && npm run docs",
-    "clean": "rm -rf lib && rm -f DOCS.md",
+    "clean": "rm -rf ./lib && rm -f ./DOCS.md",
     "watch": "npm run build -- --watch src",
     "test": "jest",
     "docs": "jsdoc2md ./lib/index.js --separators > DOCS.md",
