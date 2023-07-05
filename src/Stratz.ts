@@ -6,9 +6,8 @@ import querystring from 'querystring';
  */
 export class Stratz {
     apiToken: string;
-    private _host: string;
-    private _basePath: string;
-    private _latestVersionID: number | null;
+    private _host: string = 'api.stratz.com';
+    private _basePath: string = '/api/v1';
 
     /**
      * Create a new instance of STRATZ REST API wrapper. This is the first thing you do to start.
@@ -16,9 +15,6 @@ export class Stratz {
      */
     constructor(apiToken: string) {
         this.apiToken = apiToken;
-        this._host = 'api.stratz.com';
-        this._basePath = '/api/v1';
-        this._latestVersionID = null;
     }
 
     /**
@@ -52,7 +48,7 @@ export class Stratz {
             }
 
             https.request(options, (response: any) => {
-                let data = '';
+                let data = "";
 
                 response.on('data', (chunk: string) => {
                     data = data + chunk;
@@ -74,34 +70,13 @@ export class Stratz {
     }
 
     /**
-     * Latest Dota 2 version ID. 
-     * @internal
-     * @param {number} [gameVersionId = effectiveVersionId] - An optional GameVersion ID that is passed to this helper.
-     * @return {Promise<number>} Promise object that resolves to the latest Dota 2 version ID. 
-     */
-    private async _getEffectiveVersionId(gameVersionId?: number): Promise<number> {
-        if (gameVersionId) {
-            return gameVersionId;
-        }
-        if (this._latestVersionID !== null) {
-            return Promise.resolve(this._latestVersionID as number);
-        }
-        return this.getGameVersion()
-            .then(data => {
-            this._latestVersionID = data[0].id;
-            return this._latestVersionID as number;
-            });
-    }
-
-    /**
      * All information retaining to the Dota 2 Abilities by Game Version.
      * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
-     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Ability.
      */
-    async getAbility(languageId: number = 0, gameVersionId?: number): Promise<any> {
-        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
-        return this._apiReq(`/Ability`, 'GET', { gameVersionId: effectiveVersionId, languageId });
+    getAbility(languageId: number = 0, gameVersionId?: number): Promise<any> {
+        return this._apiReq(`/Ability`, 'GET', { languageId, gameVersionId });
     }
 
     /**
@@ -139,44 +114,40 @@ export class Stratz {
     /**
      * The current list of Heroes found in the Dota 2 client. Includes all base stats plus additional information on the hero.
      * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
-     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Hero.
      */
-    async getHero(languageId: number = 0, gameVersionId?: number): Promise<any> {
-        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
-        return this._apiReq(`/Hero`, 'GET', { gameVersionId: effectiveVersionId, languageId });
+    getHero(languageId: number = 0, gameVersionId?: number): Promise<any> {
+        return this._apiReq(`/Hero`, 'GET', { languageId, gameVersionId });
     }
 
     /**
      * List of Items in the Dota 2 Game and details about each.
      * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
-     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Item.
      */
-    async getItem(languageId: number = 0, gameVersionId?: number): Promise<any> {
-        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
-        return this._apiReq(`/Item`, 'GET', { gameVersionId: effectiveVersionId, languageId });
+    getItem(languageId: number = 0, gameVersionId?: number): Promise<any> {
+        return this._apiReq(`/Item`, 'GET', { languageId, gameVersionId });
     }
 
     /**
      * More specific details about the Item ID.
      * @param {number} id - The Item ID requested. <br/>`Required.`
-     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Item/{id}.
      */
-    async getItemById(id: number, gameVersionId?: number): Promise<any> {
-        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
-        return this._apiReq(`/Item/${id}`, 'GET', { gameVersionId: effectiveVersionId });
+    getItemById(id: number, gameVersionId?: number): Promise<any> {
+        return this._apiReq(`/Item/${id}`, 'GET', { gameVersionId });
     }
 
     /**
      * All information retaining to the Dota 2 Npcs by Game Version.
-     * @param {number} [gameVersionId = effectiveVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET /Npc.
      */
-    async getNpc(gameVersionId?: number): Promise<any> {
-        const effectiveVersionId = await this._getEffectiveVersionId(gameVersionId);
-        return this._apiReq(`/Npc`, 'GET', { gameVersionId: effectiveVersionId });
+    getNpc(gameVersionId?: number): Promise<any> {
+        return this._apiReq(`/Npc`, 'GET', { gameVersionId });
     }
 }
 
