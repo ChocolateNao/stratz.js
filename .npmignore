@@ -1,0 +1,27 @@
+.idea/
+.vscode/
+.github/
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+node_modules/
+
+# Project files
+/scripts/
+/src/
+tests/
+jest.config.js
+.gitignore
+.markdownlint.json
+package-lock.json
+tsconfig.json
+DOCS.md
+notes.txt
+.env
+.env.example
+
+# Build
+*.tgz
