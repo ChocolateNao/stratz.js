@@ -18,6 +18,9 @@ jobs:
       - run: npm ci
       - run: npm build
       - run: npm test
+        env:
+          STRATZ_TOKEN: ${{ secrets.STRATZ_TOKEN }}
+
 
   publish-npm:
     needs: build
@@ -32,4 +35,3 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          STRATZ_TOKEN: ${{ secrets.STRATZ_TOKEN }}
