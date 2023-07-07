@@ -1,4 +1,4 @@
 module.exports = {
     testMatch: ['<rootDir>/tests/**/*.test.js'],
-    testTimeout: 15000
+    testTimeout: 6000
 };
