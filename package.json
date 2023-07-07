@@ -35,7 +35,7 @@
     "api",
     "rest-api"
   ],
-  "author": "ChocolateNao",
+  "author": "ChocolateNao (https://github.com/ChocolateNao)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ChocolateNao/stratz.js/issues"
