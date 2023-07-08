@@ -2,50 +2,41 @@
 
 <div align="center">
   <a href="https://github.com/ChocolateNao/stratz.js">
-    <img src="https://img.shields.io/github/release/ChocolateNao/stratz.js.svg" />
-  </a>
+    <img src="https://img.shields.io/github/release/ChocolateNao/stratz.js.svg" /></a>
   <a href="https://www.npmjs.com/package/stratz.js">
-    <img src="https://badgen.net/npm/types/stratz.js" />
-  </a>
+    <img src="https://camo.githubusercontent.com/0d1fa0bafb9d3d26ac598799ca1d0bf767fc28a41d3f718d404433b392b9a5cd/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f74797065732f73637275622d6a732e737667" /></a>
   <a href="https://github.com/ChocolateNao/stratz.js">
-    <img src="https://img.shields.io/github/license/ChocolateNao/stratz.js.svg" />
-  </a>
+    <img src="https://img.shields.io/github/license/ChocolateNao/stratz.js.svg" /></a>
 </div>
 
 <div align="center">
   <a href="https://github.com/ChocolateNao/stratz.js/blob/master/DOCS.md">
-    <b>Documentation</b>
-  </a>
-  <b> | </b>
+    <b>Documentation</b></a>
+  <b>|</b>
   <a href="https://www.npmjs.com/package/stratz.js">
-      <b>NPM</b>
-  </a>
-  <b> | </b>
+      <b>NPM</b></a>
+  <b>|</b>
   <i class="fab fa-github"></i>
   <a href="https://github.com/ChocolateNao/stratz.js">
-      <b> GitHub</b>
-  </a>
-  <b> | </b>
+      <b>GitHub</b></a>
+  <b>|</b>
   <a href="https://stratz.com/api">
-      <b> STRATZ</b>
-  </a>
+      <b>STRATZ</b></a>
 </div>
-
-
 
 ## About
 
 <img src="https://stratz.com/images/stratz_knowledge_graph_logo.png" align="right" width="200px"/>
 A Minimalistic Node.js STRATZ REST API Wrapper.
 
-- [x] Covers 100% of the 36 STRATZ REST API endpoints.
-- [x] 0 dependencies.
-- [x] Promise-based.
-- [x] Fully documented and tested.
+- Covers 100% of the 36 STRATZ REST API endpoints.
+- 0 dependencies.
+- Promise-based.
+- Fully documented and tested.
 
 ### Features
 
-- A Variety of Game Data, Incuding:
+- A Variety of Game Data Depending on Diffrevent Game Versions, Incuding:
   - Heroes
   - Abilities
   - Items
@@ -69,7 +60,7 @@ npm install stratz.js
 ## Example
 
 Firstly, create an instance of the main class:  
-Note: This requires an API key. You can get yours for free at [STRATZ](https://stratz.com/api) website.
+*Note: This requires an API key. You can get yours for free at [STRATZ](https://stratz.com/api) website.*
 
 ```javascript
 const { Stratz } = require('stratz.js');
