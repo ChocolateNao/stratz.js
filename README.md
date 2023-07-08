@@ -26,8 +26,8 @@
 
 ## About
 
-<img src="https://stratz.com/images/stratz_knowledge_graph_logo.png" align="right" width="200px"/>
-A Minimalistic Node.js STRATZ REST API Wrapper.
+<a href="https://stratz.com"><img src="https://stratz.com/images/stratz_knowledge_graph_logo.png" align="right" width="200px"/></a>
+A Minimalistic Node.js STRATZ REST API Wrapper.  
 
 - Covers 100% of the 36 STRATZ REST API endpoints.
 - 0 dependencies.
