@@ -1,4 +1,7 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-    testMatch: ['<rootDir>/tests/**/*.test.js'],
-    testTimeout: 6000
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['<rootDir>/tests/**/*.test.js'],
+  testTimeout: 6000
 };

@@ -563,4 +563,4 @@ export class Stratz {
     }
 }
 
-module.exports = { Stratz };
+export default Stratz;

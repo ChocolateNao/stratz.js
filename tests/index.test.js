@@ -1,4 +1,4 @@
-const { Stratz } = require('../lib/index.js');
+const { Stratz } = require('../src/index');
 require('dotenv').config();
 
 const apiToken = process.env.STRATZ_TOKEN;
