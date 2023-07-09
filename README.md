@@ -29,21 +29,21 @@
 <a href="https://stratz.com"><img src="https://stratz.com/images/stratz_knowledge_graph_logo.png" align="right" width="200px"/></a>
 A Minimalistic Node.js STRATZ REST API Wrapper.  
 
-- Covers 100% of the 36 STRATZ REST API endpoints.
+- Covers 100% of the 36 [STRATZ REST API](https://docs.stratz.com/index.html) endpoints.
 - 0 dependencies.
 - Promise-based.
 - Fully documented and tested.
 
 ### Features
 
-- A Variety of Game Data Depending on Diffrevent Game Versions, Incuding:
+- A Variety of Game Data Depending on Different Game Versions, Incuding:
   - Heroes
   - Abilities
   - Items
   - Game Versions
 - Player and Match Data by Steam ID.
 
-- eSports Leagues Data Including:
+- eSports Leagues Data, Including:
   - Tournaments
   - Players
   - Matches
@@ -112,7 +112,7 @@ npm run test
 
 ## Building
 
-To create a production version of the library.  
+You can create a production version of the library.  
 *Note: This will also create a new documentation file.*
 
 ```bash
@@ -131,5 +131,5 @@ npm run compile
 
 ## License
 
-[MIT](https://github.com/ChocolateNao/dota2-randomizer/blob/master/LICENSE)  
+[MIT](https://github.com/ChocolateNao/stratz.js/blob/master/LICENSE)  
 *This project is not affiliated with STRARZ in any way.*
