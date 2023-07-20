@@ -1,3 +1,1 @@
-import Stratz from "./Stratz";
-
-export { Stratz };
+export { Stratz } from "./Stratz";
