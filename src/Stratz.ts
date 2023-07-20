@@ -562,5 +562,3 @@ export class Stratz {
         return this._apiReq(`/search/match`, 'GET', { query });
     }
 }
-
-export default Stratz;
