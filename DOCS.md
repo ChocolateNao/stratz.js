@@ -6,16 +6,16 @@
 * [Stratz](#Stratz)
     * [new Stratz(apiToken)](#new_Stratz_new)
     * [._apiReq(path, method, [queryParameters])](#Stratz+_apiReq) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getAbility([languageId], [gameVersionId])](#Stratz+getAbility) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getAbilities([languageId], [gameVersionId])](#Stratz+getAbilities) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getGameVersion()](#Stratz+getGameVersion) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getLanguages()](#Stratz+getLanguages) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getCluster()](#Stratz+getCluster) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getGameMode()](#Stratz+getGameMode) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getHero([languageId], [gameVersionId])](#Stratz+getHero) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getHeroes([languageId], [gameVersionId])](#Stratz+getHeroes) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getItems([languageId], [gameVersionId])](#Stratz+getItems) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getItemById(id, [gameVersionId])](#Stratz+getItemById) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getNpc([gameVersionId])](#Stratz+getNpc) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getLeague([tier], [skip], [take], [requireImage], [orderBy])](#Stratz+getLeague) ⇒
+    * [.getLeagues([tier], [skip], [take], [requireImage], [orderBy])](#Stratz+getLeagues) ⇒
     * [.getLeagueById(id)](#Stratz+getLeagueById) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getLeagueByIdMatches(id, [include], [steamId], [seriesId], [teamId], [isParsed], [isLeague], [hasAward], [isStats], [stageType], [gameMode], [lobbyType], [gameVersion], [tier], [take], [skip])](#Stratz+getLeagueByIdMatches) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getLeagueByIdSeries(id, [stageType], [take], [skip])](#Stratz+getLeagueByIdSeries) ⇒ <code>Promise.&lt;any&gt;</code>
@@ -42,6 +42,11 @@
     * [.getSearchByLeague(query, [tiers], [take])](#Stratz+getSearchByLeague) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getSearchByTeam(query, [isPro], [take])](#Stratz+getSearchByTeam) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getSearchByMatch(query)](#Stratz+getSearchByMatch) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getHeroById([id], [languageId], [gameVersionId])](#Stratz+getHeroById) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getAbilityById([id], [languageId], [gameVersionId])](#Stratz+getAbilityById) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getHeroList([languageId], [gameVersionId])](#Stratz+getHeroList) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getAbilityList([languageId], [gameVersionId])](#Stratz+getAbilityList) ⇒ <code>Promise.&lt;any&gt;</code>
+    * [.getLatestGameVersion([outputType])](#Stratz+getLatestGameVersion) ⇒ <code>number</code> \| <code>string</code> \| <code>object</code>
 
 
 * * *
@@ -77,9 +82,9 @@ Create a direct HTTP request to the STRATZ API.
 
 * * *
 
-<a name="Stratz+getAbility"></a>
+<a name="Stratz+getAbilities"></a>
 
-### stratz.getAbility([languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
+### stratz.getAbilities([languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
 All information retaining to the Dota 2 Abilities by Game Version.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
@@ -87,7 +92,7 @@ All information retaining to the Dota 2 Abilities by Game Version.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
 | [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
 
 
@@ -133,9 +138,9 @@ Returns a list of GameMode types which is directly supplied by Dota 2. Matches A
 
 * * *
 
-<a name="Stratz+getHero"></a>
+<a name="Stratz+getHeroes"></a>
 
-### stratz.getHero([languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
+### stratz.getHeroes([languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
 The current list of Heroes found in the Dota 2 client. Includes all base stats plus additional information on the hero.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
@@ -143,7 +148,7 @@ The current list of Heroes found in the Dota 2 client. Includes all base stats p
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
 | [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
 
 
@@ -159,7 +164,7 @@ List of Items in the Dota 2 Game and details about each.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
 | [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
 
 
@@ -196,9 +201,9 @@ All information retaining to the Dota 2 Npcs by Game Version.
 
 * * *
 
-<a name="Stratz+getLeague"></a>
+<a name="Stratz+getLeagues"></a>
 
-### stratz.getLeague([tier], [skip], [take], [requireImage], [orderBy]) ⇒
+### stratz.getLeagues([tier], [skip], [take], [requireImage], [orderBy]) ⇒
 Returns the list of Leagues limited by the queries.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
@@ -206,7 +211,7 @@ Returns the list of Leagues limited by the queries.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [tier] | <code>Array.&lt;number&gt;</code> | The type of league your requested limit by Dota 2 filter of Tier. Accepted : 1 - Amateur, 2 - Professional, 3 - DPC Minors (Premium), 4 - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
+| [tier] | <code>Array.&lt;number&gt;</code> | The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Professional, `3` - DPC Minors (Premium), `4` - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
 | [skip] | <code>number</code> | The amount to skip before returning results. |
 | [take] | <code>number</code> | The amount of results to take. <br/>`Max amount 100`. |
 | [requireImage] | <code>boolean</code> | If the league must have an image to return. |
@@ -357,7 +362,7 @@ Return Patch Notes for each Item/Ability. These are found when you hover over ea
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguage()](#Stratz+getLanguage) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
 
 
 * * *
@@ -404,7 +409,7 @@ Returns matches about a specific Steam Account ID.
 | --- | --- | --- | --- |
 | id | <code>number</code> |  | Steam Account ID of the Player. <br/>`Required.` |
 | [matchId] | <code>Array.&lt;number&gt;</code> |  | Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input. |
-| [include] | <code>Array.&lt;string&gt;</code> |  | Determines what data you want to include back from the system. This is a comma delimited `array` input. The default data for this call is very limited. Accepted Values: Player, Series, League, Team, Ability, PickBan, Spectators, Stats, StatsBreakdown. Player will return additional information about each player such as Name, Rank, Season Leader Board, etc. Series returns back any information about the series. League returns League Object. Team returns back the RadiantTeam and DireTeam Object. Ability will return the Ability (Learn Events) object. PickBan will return the PickBan Object (Hero Pick and Ban Events during the draft). Stats will return back the world average stats for basic data such as kills, deaths and assists based on Hero Rank/Lane/Role.  Will also include extremely basic data for MatchPlayerStats. |
+| [include] | <code>Array.&lt;string&gt;</code> |  | Determines what data you want to include back from the system. This is a comma delimited `array` input. The default data for this call is very limited. <br />Accepted Values: Player, Series, League, Team, Ability, PickBan, Spectators, Stats, StatsBreakdown. Player will return additional information about each player such as Name, Rank, Season Leader Board, etc. Series returns back any information about the series. League returns League Object. Team returns back the RadiantTeam and DireTeam Object. Ability will return the Ability (Learn Events) object. PickBan will return the PickBan Object (Hero Pick and Ban Events during the draft). Stats will return back the world average stats for basic data such as kills, deaths and assists based on Hero Rank/Lane/Role.  Will also include extremely basic data for MatchPlayerStats. |
 | [playerList] | <code>string</code> | <code>&quot;\&quot;Single\&quot;&quot;</code> | PlayerList determines if just the original player will be returned OR all 10. <br />Accepted Values: All, Single. Default is Single. |
 | [heroId] | <code>Array.&lt;number&gt;</code> |  | Requests matches where heroId is present. <br />This is a comma delimited `array` input. |
 | [leagueId] | <code>number</code> |  | Requests matches where a specific League is present. |
@@ -545,7 +550,7 @@ Gets the Players of Dota which have DotaPlus and have a high level hero.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [heroId] | <code>number</code> |  | If you want to limit to a single HeroId to find awards. <br />It can be found at [.getGameVersion()](#Stratz+getGameVersion). |
-| [orderBy] | <code>string</code> |  | Helps with the ordering. Accepted values are `recent` (Shows the most recent awards given) and `level` (showes by the highest level first). |
+| [orderBy] | <code>string</code> |  | Helps with the ordering. <br />Accepted values are `recent` (Shows the most recent awards given) and `level` (showes by the highest level first). |
 | [skip] | <code>number</code> | <code>0</code> | Amount of records you want to skip before starting. |
 | [take] | <code>number</code> | <code>20</code> | Amount of total records you want to take. <br />Maximum amount is `100`. |
 
@@ -737,7 +742,7 @@ The basic team search system for STRATZ.  Input a query and apply filters to lim
 <a name="Stratz+getSearchByMatch"></a>
 
 ### stratz.getSearchByMatch(query) ⇒ <code>Promise.&lt;any&gt;</code>
-The basic match search system for STRATZ.  Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
+The basic match search system for STRATZ. Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
 **Returns**: <code>Promise.&lt;any&gt;</code> - Promise object that resolves to JSON response represented by GET `/search/match`.  
@@ -745,6 +750,87 @@ The basic match search system for STRATZ.  Input a query and apply filters to li
 | Param | Type | Description |
 | --- | --- | --- |
 | query | <code>string</code> | The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.` |
+
+
+* * *
+
+<a name="Stratz+getHeroById"></a>
+
+### stratz.getHeroById([id], [languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
+Search a Hero by its ID.
+
+**Kind**: instance method of [<code>Stratz</code>](#Stratz)  
+**Returns**: <code>Promise.&lt;any&gt;</code> - Promise object that resolves to JSON representation of a hero information.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [id] | <code>number</code> |  | Hero ID according to [.getHeroList()](#Stratz+getHeroList). <br />If not specified, the resolve is equivalent to [.getHeroes()](#Stratz+getHeroes) method. |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
+
+
+* * *
+
+<a name="Stratz+getAbilityById"></a>
+
+### stratz.getAbilityById([id], [languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
+Search an Ability by its ID.
+
+**Kind**: instance method of [<code>Stratz</code>](#Stratz)  
+**Returns**: <code>Promise.&lt;any&gt;</code> - Promise object that resolves to JSON representation of a hero's abilities information.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [id] | <code>number</code> |  | Ability ID according to [.getAbilityList()](#Stratz+getAbilityList). <br />If not specified, the resolve is equivalent to [.getAbilities()](#Stratz+getAbilities) method. |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
+
+
+* * *
+
+<a name="Stratz+getHeroList"></a>
+
+### stratz.getHeroList([languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
+List of All Heroes in the Dota 2 Game by Name and Hero ID.
+
+**Kind**: instance method of [<code>Stratz</code>](#Stratz)  
+**Returns**: <code>Promise.&lt;any&gt;</code> - Promise object that resolves to JSON representation of a list of abilities.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
+
+
+* * *
+
+<a name="Stratz+getAbilityList"></a>
+
+### stratz.getAbilityList([languageId], [gameVersionId]) ⇒ <code>Promise.&lt;any&gt;</code>
+List of All Abilities in the Dota 2 Game by Name and Ability ID.
+
+**Kind**: instance method of [<code>Stratz</code>](#Stratz)  
+**Returns**: <code>Promise.&lt;any&gt;</code> - Promise object that resolves to JSON representation of a list of abilities.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [languageId] | <code>number</code> | <code>0</code> | Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`. |
+| [gameVersionId] | <code>number</code> |  | Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented. |
+
+
+* * *
+
+<a name="Stratz+getLatestGameVersion"></a>
+
+### stratz.getLatestGameVersion([outputType]) ⇒ <code>number</code> \| <code>string</code> \| <code>object</code>
+Get the Latest Version of Dota 2 Game with different variations.
+
+**Kind**: instance method of [<code>Stratz</code>](#Stratz)  
+**Returns**: <code>number</code> \| <code>string</code> \| <code>object</code> - Promise object that resolves to a representation of a latest Dota 2 version.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [outputType] | <code>string</code> | The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values. |
 
 
 * * *

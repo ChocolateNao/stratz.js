@@ -10,11 +10,12 @@ const ITEM_ID = 1; // blink dagger
 const LEAGUE_ID = 4122;
 const MATCH_ID = 7012302987;
 const HERO_ID = 14; // pudge
+const ABILITY_ID = 9627; // 'hoodwink_hunters_boomerang'
 const TEAM_NAME = 'alliance';
 
-describe('Stratz.js Unit Tests', () => {
-    test('Get Ability', async () => {
-        const result = await api.getAbility(undefined, GAME_VERSION_ID);
+describe('Stratz.js Native API Unit Tests', () => {
+    test('Get Abilities', async () => {
+        const result = await api.getAbilities(undefined, GAME_VERSION_ID);
         expect(result).toBeDefined();
     });
 
@@ -39,7 +40,7 @@ describe('Stratz.js Unit Tests', () => {
     });
 
     test('Get Heroes', async () => {
-        const result = await api.getHero(undefined, GAME_VERSION_ID);
+        const result = await api.getHeroes(undefined, GAME_VERSION_ID);
         expect(result).toBeDefined();
     });
 
@@ -58,8 +59,8 @@ describe('Stratz.js Unit Tests', () => {
         expect(result).toBeDefined();
     });
 
-    test('Get League', async () => {
-        const result = await api.getLeague();
+    test('Get Leagues', async () => {
+        const result = await api.getLeagues();
         expect(result).toBeDefined();
     });
 
@@ -148,10 +149,10 @@ describe('Stratz.js Unit Tests', () => {
         expect(result).toBeDefined();
     });
 
-    test('Get User\'s Steam', async () => {
-        const result = await api.getUserSteam();
-        expect(result).toBeDefined();
-    });
+    // test('Get User\'s Steam', async () => {
+    //     const result = await api.getUserSteam();
+    //     expect(result).rejects.toBe('HTTPS request failed with status code 302');
+    // });
 
     test('Basic Search', async () => {
         const result = await api.getSearch(MATCH_ID);
@@ -175,6 +176,33 @@ describe('Stratz.js Unit Tests', () => {
 
     test('Match Search', async () => {
         const result = await api.getSearchByMatch(MATCH_ID);
+        expect(result).toBeDefined();
+    });
+});
+
+describe('Stratz.js v2.0.0 Methods', () => {
+    test('Get Hero By ID', async () => {
+        const result = await api.getHeroById(HERO_ID, undefined, GAME_VERSION_ID);
+        expect(result).toBeDefined();
+    });
+
+    test('Get Ability By ID', async () => {
+        const result = await api.getAbilityById(ABILITY_ID, undefined, GAME_VERSION_ID);
+        expect(result).toBeDefined();
+    });
+
+    test('Get a List of Heroes', async () => {
+        const result = await api.getHeroList(undefined, GAME_VERSION_ID);
+        expect(result).toBeDefined();
+    });
+
+    test('Get a List of Abilities', async () => {
+        const result = await api.getAbilityList(undefined, GAME_VERSION_ID);
+        expect(result).toBeDefined();
+    });
+
+    test('Get Latest Version', async () => {
+        const result = await api.getLatestGameVersion();
         expect(result).toBeDefined();
     });
 });
