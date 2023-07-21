@@ -1,3 +1,4 @@
+import { IncomingMessage } from 'http';
 import https from 'https';
 import querystring from 'querystring';
 
@@ -37,7 +38,7 @@ export class Stratz {
                 fullPath += `?${queryString}`;
             }
 
-            let options = {
+            let options: object = {
                 hostname: this._host,
                 path: fullPath,
                 method: method,
@@ -50,24 +51,23 @@ export class Stratz {
             https.request(options, (response: any) => {
                 let data = "";
 
-                response.on('data', (chunk: string) => {
-                    data = data + chunk;
-                });
+                if (response) {
+                    response.on('data', (chunk: string) => {
+                        data = data + chunk;
+                    });
 
-                response.on('end', () => {
-                    if (response.statusCode === 302) {
-                        resolve({ status: "Found" })
-                    }
-                    if (response.statusCode >= 200 && response.statusCode < 300) {
-                        resolve(JSON.parse(data));
-                    } else {
-                        reject(`HTTPS request failed with status code ${response.statusCode}`);
-                    }
-                });
+                    response.on('end', () => {
+                        if (response.statusCode >= 200 && response.statusCode < 300) {
+                            resolve(JSON.parse(data));
+                        } else {
+                            reject(`HTTPS request failed with status code ${response.statusCode}`);
+                        }
+                    });
 
-                response.on('error', (error: { message: any; }) => {
-                    reject(`HTTPS request failed to retrieve a response: ${error.message}`);
-                });
+                    response.on('error', (error: { message: any; }) => {
+                        reject(`HTTPS request failed to retrieve a response: ${error.message}`);
+                    });
+                }
             }).end();
         });
     }
@@ -554,11 +554,104 @@ export class Stratz {
     }
 
     /**
-     * The basic match search system for STRATZ.  Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
+     * The basic match search system for STRATZ. Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
      * @param {string} query - The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.`
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/search/match`.
      */
     getSearchByMatch(query: string): Promise<any> {
         return this._apiReq(`/search/match`, 'GET', { query });
+    }
+
+    /**
+     * Search a Hero by its ID.
+     * @param {number} [id] - Hero ID according to [.getHeroList()](#Stratz+getHeroList). <br />If not specified, the resolve is equivalent to [.getHeroes()](#Stratz+getHeroes) method.
+     * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @return {Promise<any>} Promise object that resolves to JSON representation of a hero information.
+     */
+    async getHeroById(id?: number, languageId: number = 0, gameVersionId?: number): Promise<any> {
+        let data: any = await this.getHeroes(languageId, gameVersionId);
+        if (id) {
+            return data[String(id)];
+        }
+        return data;
+    }
+
+    /**
+     * Search an Ability by its ID.
+     * @param {number} [id] - Ability ID according to [.getAbilityList()](#Stratz+getAbilityList). <br />If not specified, the resolve is equivalent to [.getAbilities()](#Stratz+getAbilities) method.
+     * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @return {Promise<any>} Promise object that resolves to JSON representation of a hero's abilities information.
+     */
+    async getAbilityById(id?: number, languageId: number = 0, gameVersionId?: number): Promise<any> {
+        let data: any = await this.getAbilities(languageId, gameVersionId);
+        if (id) {
+            return data[String(id)];
+        }
+        return data;
+    }
+
+    /**
+     * List of All Heroes in the Dota 2 Game by Name and Hero ID. 
+     * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @return {Promise<any>} Promise object that resolves to JSON representation of a list of abilities.
+     */
+    async getHeroList(languageId: number = 0, gameVersionId?: number): Promise<any> {
+        let data: any = await this.getHeroes(languageId, gameVersionId);
+        let extractedIdArray: object[] = [];
+
+        for (let id in data) {
+            let heroId = data[id].id;
+            let heroName = data[id].shortName;
+            extractedIdArray.push({
+                heroId, 
+                heroName
+            });
+        }
+        return extractedIdArray;        
+    }
+
+    /**
+     * List of All Abilities in the Dota 2 Game by Name and Ability ID. 
+     * @param {number} [languageId = 0] - Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
+     * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
+     * @return {Promise<any>} Promise object that resolves to JSON representation of a list of abilities.
+     */
+    async getAbilityList(languageId: number = 0, gameVersionId?: number): Promise<any> {
+        let data: any = await this.getAbilities(languageId, gameVersionId);
+        let extractedIdArray: object[] = [];
+
+        for (let id in data) {
+            let abilityId = data[id].id;
+            let abilityName = data[id].name;
+            extractedIdArray.push({
+                abilityId, 
+                abilityName
+            });
+        }
+        return extractedIdArray;        
+    }
+
+    /**
+     * Get the Latest Version of Dota 2 Game with different variations.
+     * @param {string} [outputType] - The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values.
+     * @return {number | string | object} Promise object that resolves to a representation of a latest Dota 2 version.
+     */
+    async getLatestGameVersion(outputType?: string): Promise<any> {
+        let data = await this.getGameVersion();
+        if (data) {
+            switch (outputType) {
+                case "date":
+                    return data[0].startDate;                
+                case "name":
+                    return data[0].name;
+                case "id":
+                    return data[0].id;       
+                default:
+                    return data[0];
+            }
+        }
     }
 }
