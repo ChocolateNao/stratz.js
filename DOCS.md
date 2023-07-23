@@ -46,7 +46,7 @@
     * [.getAbilityById([id], [languageId], [gameVersionId])](#Stratz+getAbilityById) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getHeroList([languageId], [gameVersionId])](#Stratz+getHeroList) ⇒ <code>Promise.&lt;any&gt;</code>
     * [.getAbilityList([languageId], [gameVersionId])](#Stratz+getAbilityList) ⇒ <code>Promise.&lt;any&gt;</code>
-    * [.getLatestGameVersion([outputType])](#Stratz+getLatestGameVersion) ⇒ <code>number</code> \| <code>string</code> \| <code>object</code>
+    * [.getLatestGameVersion([outputType])](#Stratz+getLatestGameVersion) ⇒ <code>Promise.&lt;number&gt;</code> \| <code>Promise.&lt;string&gt;</code> \| <code>Promise.&lt;object&gt;</code>
 
 
 * * *
@@ -822,11 +822,11 @@ List of All Abilities in the Dota 2 Game by Name and Ability ID.
 
 <a name="Stratz+getLatestGameVersion"></a>
 
-### stratz.getLatestGameVersion([outputType]) ⇒ <code>number</code> \| <code>string</code> \| <code>object</code>
+### stratz.getLatestGameVersion([outputType]) ⇒ <code>Promise.&lt;number&gt;</code> \| <code>Promise.&lt;string&gt;</code> \| <code>Promise.&lt;object&gt;</code>
 Get the Latest Version of Dota 2 Game with different variations.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
-**Returns**: <code>number</code> \| <code>string</code> \| <code>object</code> - Promise object that resolves to a representation of a latest Dota 2 version.  
+**Returns**: <code>Promise.&lt;number&gt;</code> \| <code>Promise.&lt;string&gt;</code> \| <code>Promise.&lt;object&gt;</code> - Promise object that resolves to a representation of a latest Dota 2 version.  
 
 | Param | Type | Description |
 | --- | --- | --- |
