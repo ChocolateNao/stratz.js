@@ -1,4 +1,3 @@
-import { IncomingMessage } from 'http';
 import https from 'https';
 import querystring from 'querystring';
 
@@ -637,7 +636,7 @@ export class Stratz {
     /**
      * Get the Latest Version of Dota 2 Game with different variations.
      * @param {string} [outputType] - The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values.
-     * @return {number | string | object} Promise object that resolves to a representation of a latest Dota 2 version.
+     * @return {Promise<number> | Promise<string> | Promise<object>} Promise object that resolves to a representation of a latest Dota 2 version.
      */
     async getLatestGameVersion(outputType?: string): Promise<any> {
         let data = await this.getGameVersion();
