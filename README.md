@@ -31,7 +31,7 @@ A Minimalistic Node.js STRATZ REST API Wrapper.
 
 - Covers 100% of the 36 [STRATZ REST API](https://docs.stratz.com/index.html) endpoints.
 - 0 dependencies.
-- Promise-based.
+- Fully asynchronous.
 - Fully documented and tested.
 
 ### Features
@@ -75,6 +75,7 @@ const stratz = new Stratz(apiToken);
 All methods will return a **promise**. Be sure to handle them accordingly, for example:
 
 ```javascript
+// Use "then" syntax
 stratz.getPlayer(282424658)
     .then((result) => {
         console.log(result);
@@ -82,6 +83,12 @@ stratz.getPlayer(282424658)
     .catch((error) => {
         console.error('Error:', error);
     });
+
+// Use acync/await syntax
+async function printPlayerInfo() {
+    const result = await stratz.getPlayer(282424658);
+    console.log(result);
+}
 
 // Will return:
 // {
@@ -95,6 +102,15 @@ stratz.getPlayer(282424658)
 //     isFollowed: false
 //     }
 // }
+
+// Handling queryParameters
+api.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
+.then((result) => {
+    console.log(result);
+})
+.catch((err) => {
+    console.log(err);;
+});
 ```
 
 ## Development
