@@ -25,7 +25,7 @@ export class Stratz {
      * @param {*} [queryParameters] - Query parameters for the request.
      * @return {Promise<any>} Promise object that resolves with the result object of the HTTPS request.
      */
-    private _apiReq(path: string, method: string, queryParameters?: any): Promise<any> {
+    private _apiReq(path: string, method: string, queryParameters?: querystring.ParsedUrlQueryInput | undefined): Promise<any> {
         return new Promise((resolve, reject) => {
             if (!this.apiToken) {
                 reject('No token provided.');
@@ -154,15 +154,15 @@ export class Stratz {
 
     /**
      * Returns the list of Leagues limited by the queries.
-     * @param {Array<number>} [tier] - The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Professional, `3` - DPC Minors (Premium), `4` - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
-     * @param {number} [skip] - The amount to skip before returning results.
-     * @param {number} [take] - The amount of results to take. <br/>`Max amount 100`.
-     * @param {boolean} [requireImage] - If the league must have an image to return.
-     * @param {string} [orderBy] - The determiantion of the order of the results returned. Accepted inputs are `LastMatchTime` and `Id`. <br/>Default is `LastMatchTime`.
+     * @param {Array<number>} [queryParameters.tier] - The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Professional, `3` - DPC Minors (Premium), `4` - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+     * @param {number} [queryParameters.skip] - The amount to skip before returning results.
+     * @param {number} [queryParameters.take] - The amount of results to take. <br/>`Max amount 100`.
+     * @param {boolean} [queryParameters.requireImage] - If the league must have an image to return.
+     * @param {string} [queryParameters.orderBy] - The determiantion of the order of the results returned. Accepted inputs are `LastMatchTime` and `Id`. <br/>Default is `LastMatchTime`.
      * @returns Promise object that resolves to JSON response represented by GET `/League`.
      */
-    getLeagues(tier?: Array<number>, skip?: number, take?: number, requireImage?: boolean, orderBy?: string): Promise<any> {
-        return this._apiReq(`/league`, 'GET', { tier, skip, take, requireImage, orderBy });
+    getLeagues(queryParameters: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/league`, 'GET', queryParameters);
     }
 
     /**
@@ -177,25 +177,25 @@ export class Stratz {
     /**
      * 
      * @param {number} id - League ID. <br />`Required.`
-     * @param {Array<string>} [include] - Determines what data you want to include back from the system. This is a comma delimited `array` input. The default data for this call is very limited. Accepted Values: Player, Series, League, Team, Ability, PickBan, HeroImp. Player will return additional information about each player such as Name, Rank, Season Leader Board, etc. Series returns back any information about the series. League returns League Object. Team returns back the RadiantTeam and DireTeam Object. Ability will return the Ability (Learn Events) object. PickBan will return the PickBan Object (Hero Pick and Ban Events during the draft). HeroImp will return the AvgImp values.
-     * @param {number} [steamId] - Requests matches where Steam Account Id is present.
-     * @param {number} [seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
-     * @param {number} [teamId] - "Requests matches where a specific Team is present.
-     * @param {boolean} [isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both `Parsed` and `Un-parsed`.
-     * @param {boolean} [isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
-     * @param {boolean} [hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
-     * @param {boolean} [isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both `Stats` and `Non-stats` matches.
-     * @param {Array<any>} [stageType] - For league, if you want only data from a specific set of time.  Like Group Stages, Main Event, etc.  Not all league have stages.  This will apply a start/end date time to the query automatically.
-     * @param {string} [gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. This is a comma delimited `array` input.
-     * @param {string} [lobbyType] - Requests matches where a specific or group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [gameVersion] - Requests matches where a specific or group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
-     * @param {number} [tier] - The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Premium, `3` - Professional.
-     * @param {number} [take] - The amount of matches that will be returned. <br />The max value is `250`.
-     * @param {number} [skip] - The amount of matches that will be skipped before turning rows.
+     * @param {Array<string>} [queryParameters.include] - Determines what data you want to include back from the system. This is a comma delimited `array` input. The default data for this call is very limited. Accepted Values: Player, Series, League, Team, Ability, PickBan, HeroImp. Player will return additional information about each player such as Name, Rank, Season Leader Board, etc. Series returns back any information about the series. League returns League Object. Team returns back the RadiantTeam and DireTeam Object. Ability will return the Ability (Learn Events) object. PickBan will return the PickBan Object (Hero Pick and Ban Events during the draft). HeroImp will return the AvgImp values.
+     * @param {number} [queryParameters.steamId] - Requests matches where Steam Account Id is present.
+     * @param {number} [queryParameters.seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
+     * @param {number} [queryParameters.teamId] - "Requests matches where a specific Team is present.
+     * @param {boolean} [queryParameters.isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both `Parsed` and `Un-parsed`.
+     * @param {boolean} [queryParameters.isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
+     * @param {boolean} [queryParameters.hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
+     * @param {boolean} [queryParameters.isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both `Stats` and `Non-stats` matches.
+     * @param {Array<any>} [queryParameters.stageType] - For league, if you want only data from a specific set of time.  Like Group Stages, Main Event, etc.  Not all league have stages.  This will apply a start/end date time to the query automatically.
+     * @param {string} [queryParameters.gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. This is a comma delimited `array` input.
+     * @param {string} [queryParameters.lobbyType] - Requests matches where a specific or group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.gameVersion] - Requests matches where a specific or group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.tier] - The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Premium, `3` - Professional.
+     * @param {number} [queryParameters.take] - The amount of matches that will be returned. <br />The max value is `250`.
+     * @param {number} [queryParameters.skip] - The amount of matches that will be skipped before turning rows.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/League/{id}/matches`.
      */
-    getLeagueByIdMatches(id: number, include?: Array<string>, steamId?: number, seriesId?: number, teamId?: number, isParsed?: boolean, isLeague?: boolean, hasAward?: boolean, isStats?: boolean, stageType?: Array<any>, gameMode?: string, lobbyType?: string, gameVersion?: Array<number>, tier?: number, take?: number, skip?: number): Promise<any> {
-        return this._apiReq(`/league/${id}/matches`, 'GET', { include, steamId, seriesId, teamId, isParsed, isLeague, hasAward, isStats, stageType, gameMode, lobbyType, gameVersion, tier, take, skip });
+    getLeagueByIdMatches(id: number, queryParameters: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/league/${id}/matches`, 'GET', queryParameters);
     }
 
     /**
@@ -207,7 +207,7 @@ export class Stratz {
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET `/League/{id}/series`.
      */
     getLeagueByIdSeries(id: number, stageType?: Array<any>, take?: number, skip?: number): Promise<any> {
-        return this._apiReq(`/league/${id}/series`, 'GET', {id, stageType, take, skip});
+        return this._apiReq(`/league/${id}/series`, 'GET', { stageType, take, skip });
     }
 
     /**
@@ -270,7 +270,7 @@ export class Stratz {
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET `/Player/{id}`.
      */
     getPlayer(id: number): Promise<any> {
-        return this._apiReq(`/Player/${id}`, 'GET', { id });
+        return this._apiReq(`/Player/${id}`, 'GET');
     }
 
     /**
@@ -279,131 +279,130 @@ export class Stratz {
      * @return {Promise<any>} Promise object that resolves to JSON response represented by GET `/Player/{id}/basic`.
      */
     getPlayerBasic(id: number): Promise<any> {
-        return this._apiReq(`/Player/${id}/basic`, 'GET', { id });
+        return this._apiReq(`/Player/${id}/basic`, 'GET');
     }
 
     /**
      * Returns matches about a specific Steam Account ID.
      * @param {number} id - Steam Account ID of the Player. <br/>`Required.`
-     * @param {Array<number>} [matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
-     * @param {Array<string>} [include] - Determines what data you want to include back from the system. This is a comma delimited `array` input. The default data for this call is very limited. <br />Accepted Values: Player, Series, League, Team, Ability, PickBan, Spectators, Stats, StatsBreakdown. Player will return additional information about each player such as Name, Rank, Season Leader Board, etc. Series returns back any information about the series. League returns League Object. Team returns back the RadiantTeam and DireTeam Object. Ability will return the Ability (Learn Events) object. PickBan will return the PickBan Object (Hero Pick and Ban Events during the draft). Stats will return back the world average stats for basic data such as kills, deaths and assists based on Hero Rank/Lane/Role.  Will also include extremely basic data for MatchPlayerStats.
-     * @param {string} [playerList = "Single"] - PlayerList determines if just the original player will be returned OR all 10. <br />Accepted Values: All, Single. Default is Single.
-     * @param {Array<number>} [heroId] - Requests matches where heroId is present. <br />This is a comma delimited `array` input.
-     * @param {number} [leagueId] - Requests matches where a specific League is present.
-     * @param {number} [seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
-     * @param {number} [teamId] - Requests matches where a specific Team is present.
-     * @param {boolean} [isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
-     * @param {boolean} [isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
-     * @param {boolean} [hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
-     * @param {boolean} [isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
-     * @param {boolean} [isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
-     * @param {string} [gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
-     * @param {string} [lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-     * @param {Array<any>} [lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
-     * @param {number} [role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-     * @param {number} [tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
-     * @param {Array<number>} [region = null] - A comma delimited array model of Region Ids. Leaving null will produce all regions.
-     * @param {Array<number>} [rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
-     * @param {number} [minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
-     * @param {number} [maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
-     * @param {number} [minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
-     * @param {number} [maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
-     * @param {number} [startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
-     * @param {number} [endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
-     * @param {boolean} [isParty] - Shows only matches where the user is in a party.
-     * @param {Array<number>} [partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
-     * @param {boolean} [isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-     * @param {Array<any>} [award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
-     * @param {boolean} [isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
-     * @param {number} [take] - The amount of matches that will be returned. <br />`The max value is 50`.
-     * @param {number} [skip] - The amount of matches that will be skipped before turning rows.
+     * @param {Array<number>} [queryParameters.matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
+     * @param {Array<string>} [queryParameters.include] - Determines what data you want to include back from the system. This is a comma delimited `array` input. The default data for this call is very limited. <br />Accepted Values: Player, Series, League, Team, Ability, PickBan, Spectators, Stats, StatsBreakdown. Player will return additional information about each player such as Name, Rank, Season Leader Board, etc. Series returns back any information about the series. League returns League Object. Team returns back the RadiantTeam and DireTeam Object. Ability will return the Ability (Learn Events) object. PickBan will return the PickBan Object (Hero Pick and Ban Events during the draft). Stats will return back the world average stats for basic data such as kills, deaths and assists based on Hero Rank/Lane/Role.  Will also include extremely basic data for MatchPlayerStats.
+     * @param {string} [queryParameters.playerList = "Single"] - PlayerList determines if just the original player will be returned OR all 10. <br />Accepted Values: All, Single. Default is Single.
+     * @param {Array<number>} [queryParameters.heroId] - Requests matches where heroId is present. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.leagueId] - Requests matches where a specific League is present.
+     * @param {number} [queryParameters.seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
+     * @param {number} [queryParameters.teamId] - Requests matches where a specific Team is present.
+     * @param {boolean} [queryParameters.isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
+     * @param {boolean} [queryParameters.isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
+     * @param {boolean} [queryParameters.hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
+     * @param {boolean} [queryParameters.isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
+     * @param {boolean} [queryParameters.isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
+     * @param {string} [queryParameters.gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
+     * @param {string} [queryParameters.lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
+     * @param {Array<any>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+     * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
+     * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+     * @param {Array<number>} [queryParameters.region = null] - A comma delimited array model of Region Ids. Leaving null will produce all regions.
+     * @param {Array<number>} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
+     * @param {number} [queryParameters.minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
+     * @param {number} [queryParameters.startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
+     * @param {number} [queryParameters.endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
+     * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
+     * @param {Array<number>} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
+     * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
+     * @param {Array<any>} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+     * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
+     * @param {number} [queryParameters.take] - The amount of matches that will be returned. <br />`The max value is 50`.
+     * @param {number} [queryParameters.skip] - The amount of matches that will be skipped before turning rows.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/Player/{id}/matches`.
      */
-    getPlayerMatches(id: number, matchId?: Array<number>, include?: Array<string>, playerList?: string, heroId?: Array<number>, leagueId?: number, seriesId?: number, teamId?: number, isParsed?: boolean, isLeague?: boolean, hasAward?: boolean, isStats?: boolean, isVictory?: boolean, gameMode?: string, lobbyType?: string, gameVersionId?: Array<number>, withFriends?: Array<number>, withFriendsHero?: Array<number>, lane?: Array<any>, role?: number, tier?: number, region?: Array<number>, rank?: Array<number>, minDuration?: number, maxDuration?: number, minGameVersionId?: number, maxGameVersionId?: number, startDateTime?: number, endDateTime?: number, isParty?: boolean, partyCount?: Array<number>, isRadiant?: boolean, award?: Array<any>, isTeam?: boolean, take?: number, skip?: number): Promise<any> {
-        return this._apiReq(`/Player/${id}/matches`, 'GET', { matchId, include, playerList, heroId, leagueId, seriesId, teamId, isParsed, isLeague, hasAward, isStats, isVictory, gameMode, lobbyType, gameVersionId, withFriends, withFriendsHero, lane, role, tier, region, rank, minDuration, maxDuration, minGameVersionId, maxGameVersionId, startDateTime, endDateTime, isParty, partyCount, isRadiant, award, isTeam, take, skip });
+    getPlayerMatches(id: number, queryParameters?: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/Player/${id}/matches`, 'GET', queryParameters);
     }
 
     /**
      * Returns a list of all Heroes played by the Steam Account ID and contains data about the average performance.
      * @param {number} id - Steam Account ID of the Player. <br/>`Required.`
-     * @param {Array<number>} [heroId] - Requests matches where heroId is present. <br />This is a comma delimited `array` input. <br/>`Required.`
-     * @param {Array<number>} [matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
-     * @param {number} [leagueId] - Requests matches where a specific League is present.
-     * @param {number} [seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
-     * @param {number} [teamId] - Requests matches where a specific Team is present.
-     * @param {boolean} [isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
-     * @param {boolean} [isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
-     * @param {boolean} [hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
-     * @param {boolean} [isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
-     * @param {boolean} [isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
-     * @param {string} [gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
-     * @param {string} [lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-     * @param {Array<any>} [lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
-     * @param {number} [role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-     * @param {number} [tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
-     * @param {Array<number>} [region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
-     * @param {Array<number>} [rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
-     * @param {number} [minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
-     * @param {number} [maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
-     * @param {number} [minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
-     * @param {number} [maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
-     * @param {number} [startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
-     * @param {number} [endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
-     * @param {boolean} [isParty] - Shows only matches where the user is in a party.
-     * @param {Array<number>} [partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
-     * @param {boolean} [isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-     * @param {Array<any>} [award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
-     * @param {boolean} [isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
+     * @param {Array<number>} [queryParameters.matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.leagueId] - Requests matches where a specific League is present.
+     * @param {number} [queryParameters.seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
+     * @param {number} [queryParameters.teamId] - Requests matches where a specific Team is present.
+     * @param {boolean} [queryParameters.isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
+     * @param {boolean} [queryParameters.isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
+     * @param {boolean} [queryParameters.hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
+     * @param {boolean} [queryParameters.isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
+     * @param {boolean} [queryParameters.isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
+     * @param {string} [queryParameters.gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
+     * @param {string} [queryParameters.lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
+     * @param {Array<any>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+     * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
+     * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+     * @param {Array<number>} [queryParameters.region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
+     * @param {Array<number>} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
+     * @param {number} [queryParameters.minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
+     * @param {number} [queryParameters.startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
+     * @param {number} [queryParameters.endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
+     * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
+     * @param {Array<number>} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
+     * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
+     * @param {Array<any>} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+     * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/Player/{id}/heroPerformance/{heroId}`.
      */
-    getPlayerHeroPerformance(id: number, heroId?: Array<number>, matchId?: Array<number>, leagueId?: number, seriesId?: number, teamId?: number, isParsed?: boolean, isLeague?: boolean, isTeam?: boolean, hasAward?: boolean, isStats?: boolean, isVictory?: boolean, gameMode?: string, lobbyType?: string, gameVersionId?: Array<number>, withFriends?: Array<number>, withFriendsHero?: Array<number>, lane?: Array<any>, role?: number, tier?: number, region?: Array<number>, rank?: Array<number>, minDuration?: number, maxDuration?: number, minGameVersionId?: number, maxGameVersionId?: number, startDateTime?: number, endDateTime?: number, isParty?: boolean, partyCount?: Array<number>, isRadiant?: boolean, award?: Array<any>): Promise<any> {
-        return this._apiReq(`/player/${id}/heroPerformance/${heroId}`, 'GET', { matchId, leagueId, seriesId, teamId, isParsed, isLeague, hasAward, isStats, isVictory, gameMode, lobbyType, gameVersionId, withFriends, withFriendsHero, lane, role, tier, region, rank, minDuration, maxDuration, minGameVersionId, maxGameVersionId, startDateTime, endDateTime, isParty, partyCount, isRadiant, award, isTeam});
+    getPlayerHeroPerformance(id: number, queryParameters?: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/player/${id}/heroPerformance`, 'GET', queryParameters);
     }
 
     /**
      * A more in depth at a single player's single hero performance.
      * @param {number} id - Steam Account ID of the Player. <br/>`Required.`
      * @param {Array<number>} heroId - Requests matches where heroId is present. <br />This is a comma delimited `array` input. <br/>`Required.`
-     * @param {Array<number>} [matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
-     * @param {number} [leagueId] - Requests matches where a specific League is present.
-     * @param {number} [seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
-     * @param {number} [teamId] - Requests matches where a specific Team is present.
-     * @param {boolean} [isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
-     * @param {boolean} [isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
-     * @param {boolean} [hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
-     * @param {boolean} [isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
-     * @param {boolean} [isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
-     * @param {string} [gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
-     * @param {string} [lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-     * @param {Array<any>} [lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
-     * @param {number} [role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-     * @param {number} [tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
-     * @param {Array<number>} [region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
-     * @param {Array<number>} [rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
-     * @param {number} [minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
-     * @param {number} [maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
-     * @param {number} [minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
-     * @param {number} [maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
-     * @param {number} [startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
-     * @param {number} [endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
-     * @param {boolean} [isParty] - Shows only matches where the user is in a party.
-     * @param {Array<number>} [partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
-     * @param {boolean} [isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-     * @param {Array<any>} [award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
-     * @param {boolean} [isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
+     * @param {Array<number>} [queryParameters.matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.leagueId] - Requests matches where a specific League is present.
+     * @param {number} [queryParameters.seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
+     * @param {number} [queryParameters.teamId] - Requests matches where a specific Team is present.
+     * @param {boolean} [queryParameters.isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
+     * @param {boolean} [queryParameters.isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
+     * @param {boolean} [queryParameters.hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
+     * @param {boolean} [queryParameters.isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
+     * @param {boolean} [queryParameters.isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
+     * @param {string} [queryParameters.gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
+     * @param {string} [queryParameters.lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
+     * @param {Array<any>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+     * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
+     * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+     * @param {Array<number>} [queryParameters.region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
+     * @param {Array<number>} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
+     * @param {number} [queryParameters.minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
+     * @param {number} [queryParameters.startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
+     * @param {number} [queryParameters.endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
+     * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
+     * @param {Array<number>} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
+     * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
+     * @param {Array<any>} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+     * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/Player/{id}/heroPerformance/{heroId}`.
      */
-    getPlayerHeroPerformanceByHeroId(id: number, heroId: number, matchId?: Array<number>, leagueId?: number, seriesId?: number, teamId?: number, isParsed?: boolean, isLeague?: boolean, isTeam?: boolean, hasAward?: boolean, isStats?: boolean, isVictory?: boolean, gameMode?: string, lobbyType?: string, gameVersionId?: Array<number>, withFriends?: Array<number>, withFriendsHero?: Array<number>, lane?: Array<any>, role?: number, tier?: number, region?: Array<number>, rank?: Array<number>, minDuration?: number, maxDuration?: number, minGameVersionId?: number, maxGameVersionId?: number, startDateTime?: number, endDateTime?: number, isParty?: boolean, partyCount?: Array<number>, isRadiant?: boolean, award?: Array<any>): Promise<any> {
-        return this._apiReq(`/player/${id}/heroPerformance/${heroId}`, 'GET', { matchId, leagueId, seriesId, teamId, isParsed, isLeague, hasAward, isStats, isVictory, gameMode, lobbyType, gameVersionId, withFriends, withFriendsHero, lane, role, tier, region, rank, minDuration, maxDuration, minGameVersionId, maxGameVersionId, startDateTime, endDateTime, isParty, partyCount, isRadiant, award, isTeam});
+    getPlayerHeroPerformanceByHeroId(id: number, heroId: number, queryParameters?: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/player/${id}/heroPerformance/${heroId}`, 'GET', queryParameters);
     }
 
     /**
@@ -438,41 +437,41 @@ export class Stratz {
     /**
      * Returns a list of all Heroes played by the Steam Account ID and contains data about the average performance.
      * @param {number} id - Steam Account ID of the Player. <br/>`Required.`
-     * @param {Array<number>} [matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [heroId] - Requests matches where heroId is present. <br />This is a comma delimited `array` input.
-     * @param {number} [leagueId] - Requests matches where a specific League is present.
-     * @param {number} [seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
-     * @param {number} [teamId] - Requests matches where a specific Team is present.
-     * @param {boolean} [isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
-     * @param {boolean} [isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
-     * @param {boolean} [hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
-     * @param {boolean} [isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
-     * @param {boolean} [isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
-     * @param {string} [gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
-     * @param {string} [lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
-     * @param {Array<number>} [withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-     * @param {Array<any>} [lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
-     * @param {number} [role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-     * @param {number} [tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
-     * @param {Array<number>} [region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
-     * @param {Array<number>} [rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
-     * @param {number} [minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
-     * @param {number} [maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
-     * @param {number} [minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
-     * @param {number} [maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
-     * @param {number} [startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
-     * @param {number} [endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
-     * @param {boolean} [isParty] - Shows only matches where the user is in a party.
-     * @param {Array<number>} [partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
-     * @param {boolean} [isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-     * @param {Array<any>} [award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
-     * @param {boolean} [isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
+     * @param {Array<number>} [queryParameters.matchId] - Requests matches where the match id is an exact match. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.heroId] - Requests matches where heroId is present. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.leagueId] - Requests matches where a specific League is present.
+     * @param {number} [queryParameters.seriesId] - Matches with a matching [.getLeagueByIdSeries()](#Stratz+getLeagueByIdSeries).
+     * @param {number} [queryParameters.teamId] - Requests matches where a specific Team is present.
+     * @param {boolean} [queryParameters.isParsed] - Requests matches where we have parsed data for the match. <br />Default takes both Parsed and Un-parsed.
+     * @param {boolean} [queryParameters.isLeague] - Requests matches where they are league if any kind. Default takes both leagues and non-leagues.
+     * @param {boolean} [queryParameters.hasAward] - Requests matches where the an award has been won. Must be used in conjunction with playerType = Single.
+     * @param {boolean} [queryParameters.isStats] - Require that STRATZ belives this was a legit match and did not contain a leaver, feeding, etc. <br />Default includes both Stats and non-stats matches.
+     * @param {boolean} [queryParameters.isVictory = null] - Requests matches where the SteamId is Victorious. Default is null which returns both wins and defeats. Setting to `0` returns only defeats.
+     * @param {string} [queryParameters.gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
+     * @param {string} [queryParameters.lobbyType] - Requests matches where a specific or a group of [.getLobbyType()](#Stratz+getLobbyType) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
+     * @param {Array<number>} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
+     * @param {Array<any>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+     * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
+     * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+     * @param {Array<number>} [queryParameters.region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
+     * @param {Array<number>} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
+     * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no maximum.
+     * @param {number} [queryParameters.minGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no minimum.
+     * @param {number} [queryParameters.maxGameVersionId] - Requests matches where the match is lower than this input.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br /> Default is null and there is no maximum.
+     * @param {number} [queryParameters.startDateTime = null] - Requests matches where the match end date is greater than the inputted time.  Must input an Epoc Unix Timestamp of the time. <br /> Default is null and there is no minium.
+     * @param {number} [queryParameters.endDateTime = null] - Requests matches where the match end date is less than the inputted time.  See [.getGameVersion()](#Stratz+getGameVersion) API call for a list of patch IDs. <br />Default is null and there is no maximum.
+     * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
+     * @param {Array<number>} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
+     * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
+     * @param {Array<any>} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+     * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/player/{id}/summary`.
      */
-    getPlayerSummary(id: number, heroId?: Array<number>, matchId?: Array<number>, leagueId?: number, seriesId?: number, teamId?: number, isParsed?: boolean, isLeague?: boolean, hasAward?: boolean, isStats?: boolean, isVictory?: boolean, gameMode?: string, lobbyType?: string, gameVersionId?: Array<number>, withFriends?: Array<number>, withFriendsHero?: Array<number>, lane?: Array<any>, role?: number, tier?: number, region?: Array<number>, rank?: Array<number>, minDuration?: number, maxDuration?: number, minGameVersionId?: number, maxGameVersionId?: number, startDateTime?: number, endDateTime?: number, isParty?: boolean, partyCount?: Array<number>, isRadiant?: boolean, award?: Array<any>, isTeam?: boolean): Promise<any> {
-        return this._apiReq(`/player/${id}/summary`, 'GET', { matchId, heroId, leagueId, seriesId, teamId, isParsed, isLeague, hasAward, isStats, isVictory, gameMode, lobbyType, gameVersionId, withFriends, withFriendsHero, lane, role, tier, region, rank, minDuration, maxDuration, minGameVersionId, maxGameVersionId, startDateTime, endDateTime, isParty, partyCount, isRadiant, award, isTeam});
+    getPlayerSummary(id: number, queryParameters?: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/player/${id}/summary`, 'GET', queryParameters);
     }
 
     /**
@@ -503,31 +502,31 @@ export class Stratz {
     /**
      * The basic search system for STRATZ.  Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
      * @param {string} query - The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.`
-     * @param {number} [minRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
-     * @param {number} [maxRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
-     * @param {Array<number>} [leaderboardRegion] - A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input.
-     * @param {number} [lastSeen] - The Epoc Datestamp of when the player must have played by.
-     * @param {Array<number>} [tiers] - Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`.
-     * @param {boolean} [isPro] - Used when searching Teams, if the Team is a professional team.
-     * @param {number} [take] - Amount of results to be returned. <br />`Max is 150`.
+     * @param {number} [queryParameters.minRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
+     * @param {number} [queryParameters.maxRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
+     * @param {Array<number>} [queryParameters.leaderboardRegion] - A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input.
+     * @param {number} [queryParameters.lastSeen] - The Epoc Datestamp of when the player must have played by.
+     * @param {Array<number>} [queryParameters.tiers] - Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`.
+     * @param {boolean} [queryParameters.isPro] - Used when searching Teams, if the Team is a professional team.
+     * @param {number} [queryParameters.take] - Amount of results to be returned. <br />`Max is 150`.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/Search`.
      */
-    getSearch(query: string, minRank?: number, maxRank?: number, leaderboardRegion?: Array<number>, lastSeen?: number, tiers?: Array<number>, isPro?: boolean, take?: number): Promise<any> {
-        return this._apiReq(`/Search`, 'GET', { query, minRank, maxRank, leaderboardRegion, lastSeen, tiers, isPro, take });
+    getSearch(query: string, queryParameters: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/Search`, 'GET', { query, ...queryParameters });
     }
 
     /**
      * The basic search system for STRATZ.  Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
      * @param {string} query - The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.`
-     * @param {number} [minRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
-     * @param {number} [maxRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
-     * @param {Array<number>} [leaderboardRegion] - A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input.
-     * @param {number} [lastSeen] - The Epoc Datestamp of when the player must have played by.
-     * @param {number} [take] - Amount of results to be returned. <br />`Max is 150`.
+     * @param {number} [queryParamemters.minRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
+     * @param {number} [queryParamemters.maxRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
+     * @param {Array<number>} [queryParamemters.leaderboardRegion] - A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input.
+     * @param {number} [queryParamemters.lastSeen] - The Epoc Datestamp of when the player must have played by.
+     * @param {number} [queryParamemters.take] - Amount of results to be returned. <br />`Max is 150`.
      * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/search/player`.
      */
-    getSearchByPlayer(query: string, minRank?: number, maxRank?: number, leaderboardRegion?: Array<number>, lastSeen?: number, take?: number): Promise<any> {
-        return this._apiReq(`/search/player`, 'GET', { query, minRank, maxRank, leaderboardRegion, lastSeen, take });
+    getSearchByPlayer(query: string, queryParamemters: querystring.ParsedUrlQueryInput): Promise<any> {
+        return this._apiReq(`/search/player`, 'GET', { query, ...queryParamemters });
     }
 
     /**
