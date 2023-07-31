@@ -104,7 +104,7 @@ async function printPlayerInfo() {
 // }
 
 // Handling queryParameters
-api.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
+stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
 .then((result) => {
     console.log(result);
 })
