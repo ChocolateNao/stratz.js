@@ -4,8 +4,10 @@
   <a href="https://github.com/ChocolateNao/stratz.js">
     <img src="https://img.shields.io/github/release/ChocolateNao/stratz.js.svg" /></a>
   <a href="https://www.npmjs.com/package/stratz.js">
-    <img src="https://camo.githubusercontent.com/0d1fa0bafb9d3d26ac598799ca1d0bf767fc28a41d3f718d404433b392b9a5cd/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f74797065732f73637275622d6a732e737667" /></a>
-  <a href="https://github.com/ChocolateNao/stratz.js">
+    <img src="https://img.shields.io/github/actions/workflow/status/ChocolateNao/stratz.js/npm-publish.yml" /></a>
+  <a href="https://www.npmjs.com/package/stratz.js">
+    <img src="https://img.shields.io/badge/types-TypeScript-blue" /></a>
+  <a href="https://github.com/ChocolateNao/stratz.js/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/ChocolateNao/stratz.js.svg" /></a>
 </div>
 
@@ -29,10 +31,11 @@
 <a href="https://stratz.com"><img src="https://stratz.com/images/stratz_knowledge_graph_logo.png" align="right" width="200px"/></a>
 A Minimalistic Node.js STRATZ REST API Wrapper.  
 
-- Covers 100% of the 36 [STRATZ REST API](https://docs.stratz.com/index.html) endpoints.
-- 0 dependencies.
-- Promise-based.
-- Fully documented and tested.
+- [x] Covers 100% of the 36 [STRATZ REST API](https://docs.stratz.com/index.html) endpoints.
+- [x] 0 dependencies.
+- [x] Promise-based.
+- [x] Fully documented and tested.
+- [x] Strong type system.
 
 ### Features
 
@@ -48,6 +51,8 @@ A Minimalistic Node.js STRATZ REST API Wrapper.
   - Players
   - Matches
 - Query Search
+- Utility Methods
+- Descriptive Type System
 
 ## Installation
 
@@ -95,6 +100,15 @@ stratz.getPlayer(282424658)
 //     isFollowed: false
 //     }
 // }
+
+// Handling queryParameters
+stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
+.then((result) => {
+    console.log(result);
+})
+.catch((err) => {
+    console.log(err);;
+});
 ```
 
 ## Development
