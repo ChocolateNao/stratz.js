@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NO_COLOR="\033[0m"
+
+echo -e "\n${RED}⚠ ${NO_COLOR}pre-push\n"
+npx jest
+echo -e "\n${GREEN}✓ ${NO_COLOR}pre-push\n"

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+RED="\033[0;31m"
+LRED="\033[1;31m"
+YELLOW="\033[1;33m"
+DGRAY="\033[1;30m"
+GREEN="\033[0;32m"
+NO_COLOR="\033[0m"
+
+echo -e "\n${RED}⚠️ ${NO_COLOR}commit-msg\n"
+
+commit_msg_file=$1
+commit_msg=$(cat $commit_msg_file)
+if ! echo "$commit_msg" | grep -qE "^[a-z]+(([a-z]+))?\\s*:\\s*[a-z].*"; then
+  echo -e "${RED}✗ ${LRED}Error: ${NO_COLOR}Commit message format is incorrect.\n${DGRAY}It should match the format '${YELLOW}prefix([scope]): message${DGRAY}' in ${YELLOW}lowercase${DGRAY}.\n" >&2
+  exit 1
+fi
+echo -e "\n${GREEN}✓ ${NO_COLOR}commit-msg\n"
