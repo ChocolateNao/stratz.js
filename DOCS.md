@@ -83,6 +83,7 @@ Create a direct HTTP request to the STRATZ API.
 * * *
 
 <a name="Stratz+getAbilities"></a>
+<a name="Stratz+getAbilities"></a>
 
 ### stratz.getAbilities([languageId], [gameVersionId]) ⇒ <code>Record&lt;string, Ability&gt;</code>
 All information retaining to the Dota 2 Abilities by Game Version.
@@ -138,6 +139,7 @@ Returns a list of GameMode types which is directly supplied by Dota 2. Matches A
 
 * * *
 
+<a name="Stratz+getHeroes"></a>
 <a name="Stratz+getHeroes"></a>
 
 ### stratz.getHeroes([languageId], [gameVersionId]) ⇒ <code>Promise&lt;Record&lt;string, Hero&gt;&gt;</code>
@@ -201,6 +203,7 @@ All information retaining to the Dota 2 Npcs by Game Version.
 
 * * *
 
+<a name="Stratz+getLeagues"></a>
 <a name="Stratz+getLeagues"></a>
 
 ### stratz.getLeagues() ⇒ <code>Promise&lt;Array&lt;League&gt;&gt;</code>
@@ -552,7 +555,7 @@ Gets the Players of Dota which have DotaPlus and have a high level hero.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [heroId] | <code>number</code> |  | If you want to limit to a single HeroId to find awards. <br />It can be found at [.getGameVersion()](#Stratz+getGameVersion). |
-| [orderBy] | <code>string</code> |  | Helps with the ordering. Accepted values are `recent` (Shows the most recent awards given) and `level` (showes by the highest level first). |
+| [orderBy] | <code>string</code> |  | Helps with the ordering. <br />Accepted values are `recent` (Shows the most recent awards given) and `level` (showes by the highest level first). |
 | [skip] | <code>number</code> | <code>0</code> | Amount of records you want to skip before starting. |
 | [take] | <code>number</code> | <code>20</code> | Amount of total records you want to take. <br />Maximum amount is `100`. |
 

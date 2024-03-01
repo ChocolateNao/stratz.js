@@ -80,6 +80,7 @@ const stratz = new Stratz(apiToken);
 All methods will return a **promise**. Be sure to handle them accordingly, for example:
 
 ```javascript
+// Use "then" syntax
 stratz.getPlayer(282424658)
     .then((result) => {
         console.log(result);
@@ -87,6 +88,12 @@ stratz.getPlayer(282424658)
     .catch((error) => {
         console.error('Error:', error);
     });
+
+// Use acync/await syntax
+async function printPlayerInfo() {
+    const result = await stratz.getPlayer(282424658);
+    console.log(result);
+}
 
 // Will return:
 // {
@@ -100,6 +107,15 @@ stratz.getPlayer(282424658)
 //     isFollowed: false
 //     }
 // }
+
+// Handling queryParameters
+stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
+.then((result) => {
+    console.log(result);
+})
+.catch((err) => {
+    console.log(err);;
+});
 
 // Handling queryParameters
 stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
