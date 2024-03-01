@@ -1,0 +1,11 @@
+/lib
+/.vscode
+/coverage
+/node_modules
+/.github
+
+DOCS.md
+notes.txt
+README.md
+*.config.ts
+*.test.ts

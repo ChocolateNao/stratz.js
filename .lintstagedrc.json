@@ -1,0 +1,4 @@
+{
+  "*.{js,jsx,ts,tsx}": "npx eslint --max-warnings 0",
+  "*{.json,html,css,scss}": "npx prettier --check"
+}
