@@ -729,7 +729,7 @@ class Stratz {
       languageId,
       gameVersionId,
     );
-    if (id) {
+    if (!id) {
       throw new SyntaxError('Invalid Ability ID');
     }
     return data[String(id)];
