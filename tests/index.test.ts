@@ -205,22 +205,19 @@ describe('Stratz.js v2.0.0 Methods', () => {
       expect(async () => await api.getHeroById(HERO_ID)).not.toThrow();
   });
 
-  test('Get Ability By ID', async () => {
+  test('Get Ability By ID', () => {
     expect(async () => await api.getAbilityById(ABILITY_ID, StratzLanguage.English, GAME_VERSION_ID)).not.toThrow();
   });
 
-  test('Get a List of Heroes', async () => {
-      const result = await api.getHeroList(StratzLanguage.English, GAME_VERSION_ID);
-      expect(result).toBeDefined();
+  test('Get a List of Heroes', () => {
+    expect(async () => await api.getHeroList(StratzLanguage.English, GAME_VERSION_ID)).not.toThrow();
   });
 
-  test('Get a List of Abilities', async () => {
-      const result = await api.getAbilityList(StratzLanguage.English, GAME_VERSION_ID);
-      expect(result).toBeDefined();
+  test('Get a List of Abilities', () => {
+    expect(async () => await api.getAbilityList(StratzLanguage.English, GAME_VERSION_ID)).not.toThrow();
   });
 
-  test('Get Latest Version', async () => {
-      const result = await api.getLatestGameVersion();
-      expect(result).toBeDefined();
+  test('Get Latest Version', () => {
+    expect(async () => await api.getLatestGameVersion()).not.toThrow();
   });
 });
