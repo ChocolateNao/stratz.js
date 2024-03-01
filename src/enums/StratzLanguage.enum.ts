@@ -1,4 +1,4 @@
-export enum Language {
+export enum StratzLanguage {
   English = '0',
   Brazilian = '1',
   Bulgarian = '2',
