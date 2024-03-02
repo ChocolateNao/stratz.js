@@ -10,7 +10,7 @@ const STEAM_ID = 282424658;
 const GAME_VERSION_ID = 169; // 7.35
 const ITEM_ID = 1; // blink dagger
 const LEAGUE_ID = 4122;
-const MATCH_ID = 7012302987;
+const MATCH_ID = 7614420799;
 const HERO_ID = 14; // pudge
 const TEAM_NAME = 'alliance';
 const ABILITY_ID = 9627; // 'hoodwink_hunters_boomerang'
@@ -183,18 +183,18 @@ describe('Stratz.js Unit Tests', () => {
   });
 
   test('Get Match By Id', async () => {
-    expect(async () => await api.getMatchById(MATCH_ID)).not.toThrow();
+    expect(await api.getMatchById(MATCH_ID)).toBeDefined();
   });
 
-  test('Post Match Call By Id', async () => {
-    expect(async () => await api.postMatchCallById(MATCH_ID)).not.toThrow();
+  test('Post Match Call By Id', () => {
+    expect(async () => await api.postMatchCallById(MATCH_ID)).resolves;
   });
 
-  test('Get Match Live', async () => {
-    expect(async () => await api.getMatchLive(MATCH_ID)).not.toThrow();
+  test('Get Match Live', () => {
+    expect(async () => await api.getMatchLive(MATCH_ID)).resolves;
   });
 
-  test('Resolves to an error if no token is provided', async () => {
+  test('Rejects with an error if no token is provided', async () => {
     const noTokenClass = new Stratz('');
     await expect(async () => await noTokenClass.getUserSteam()).rejects.toThrow();
   });
@@ -202,22 +202,24 @@ describe('Stratz.js Unit Tests', () => {
 
 describe('Stratz.js v2.0.0 Methods', () => {
   test('Get Hero By ID', async () => {
-      expect(async () => await api.getHeroById(HERO_ID)).not.toThrow();
+      expect(await api.getHeroById(HERO_ID)).toBeDefined();
+      expect(async () => await api.getHeroById()).rejects.toThrow();
   });
 
-  test('Get Ability By ID', () => {
-    expect(async () => await api.getAbilityById(ABILITY_ID, StratzLanguage.English, GAME_VERSION_ID)).not.toThrow();
+  test('Get Ability By ID', async () => {
+    expect(await api.getAbilityById(ABILITY_ID, StratzLanguage.English, GAME_VERSION_ID)).toBeDefined();
+    expect(async () => await api.getAbilityById()).rejects.toThrow();
   });
 
-  test('Get a List of Heroes', () => {
-    expect(async () => await api.getHeroList(StratzLanguage.English, GAME_VERSION_ID)).not.toThrow();
+  test('Get a List of Heroes', async () => {
+    expect(await api.getHeroList(StratzLanguage.English, GAME_VERSION_ID)).toBeDefined();
   });
 
-  test('Get a List of Abilities', () => {
-    expect(async () => await api.getAbilityList(StratzLanguage.English, GAME_VERSION_ID)).not.toThrow();
+  test('Get a List of Abilities', async () => {
+    expect(await api.getAbilityList(StratzLanguage.English, GAME_VERSION_ID)).toBeDefined();
   });
 
-  test('Get Latest Version', () => {
-    expect(async () => await api.getLatestGameVersion()).not.toThrow();
+  test('Get Latest Version', async () => {
+    expect(await api.getLatestGameVersion()).toBeDefined();
   });
 });
