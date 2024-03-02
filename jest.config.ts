@@ -4,8 +4,10 @@ const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['<rootDir>/tests/**/*.test.ts'],
-  testTimeout: 15000,
+  testTimeout: 10000,
   coverageReporters: ['text'],
+  bail: 1,
+  forceExit: true,
 };
 
 export default config;

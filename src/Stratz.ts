@@ -6,6 +6,7 @@ import querystring from 'querystring';
 import { StratzLanguage } from './enums/StratzLanguage.enum';
 import type { Ability } from './models/Ability.interface';
 import type { Cluster } from './models/Cluster.interface';
+import type { AbilityList, HeroList } from './models/DataList.interface';
 import type { DotaPlusLeaderboard } from './models/DotaPlusLeaderboard.interface';
 import type { ESportsPlayer } from './models/ESportsPlayer.interface';
 import type { GameMode } from './models/GameMode.interface';
@@ -21,12 +22,25 @@ import type {
   MatchDetailed,
 } from './models/Match.interface';
 import type { Npc } from './models/Npc.interface';
-import type { NumRange } from './models/NumRange.interface';
+import type { NumRange } from './models/NumRange.type';
 import {
   type PlayerSummary,
   type StratzPlayer,
   type StratzPlayerBasic,
 } from './models/Player.interface';
+import type {
+  LeaguesByIdQuery,
+  LeaguesQuery,
+} from './models/query/LeaguesQuery.interface';
+import type {
+  HeroPerformanceQuery,
+  MatchQuery,
+  PlayerSummaryQuery,
+} from './models/query/MatchQuery.interface';
+import type {
+  SearchByPlayerQuery,
+  SearchQuery,
+} from './models/query/SearchQuery.interface';
 import type { Region } from './models/Region.interface';
 import type { Series } from './models/Series.interface';
 import type { User } from './models/User.interface';
@@ -215,14 +229,14 @@ class Stratz {
 
   /**
    * Returns the list of Leagues limited by the queries.
-   * @param {number[]} [queryParameters.tier] - The type of league your requested limit by Dota 2 filter of Tier. Accepted : 1 - Amateur, 2 - Professional, 3 - DPC Minors (Premium), 4 - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>} [queryParameters.tier] - The type of league your requested limit by Dota 2 filter of Tier. Accepted : 1 - Amateur, 2 - Professional, 3 - DPC Minors (Premium), 4 - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
    * @param {number} [queryParameters.skip] - The amount to skip before returning results.
    * @param {number} [queryParameters.take] - The amount of results to take. <br/>`Max amount 100`.
    * @param {boolean} [queryParameters.requireImage] - If the league must have an image to return.
    * @param {string} [queryParameters.orderBy] - The determiantion of the order of the results returned. Accepted inputs are `LastMatchTime` and `Id`. <br/>Default is `LastMatchTime`.
    * @returns {Promise<League[]>} Promise object that resolves to JSON response represented by GET `/League`.
    */
-  async getLeagues(queryParameters?: ParsedUrlQueryInput): Promise<League[]> {
+  async getLeagues(queryParameters?: LeaguesQuery): Promise<League[]> {
     return await this._apiReq(`/league`, 'GET', queryParameters);
   }
 
@@ -250,14 +264,14 @@ class Stratz {
    * @param {string} [queryParameters.gameMode] - Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. This is a comma delimited `array` input.
    * @param {string} [queryParameters.lobbyType] - Requests matches where a specific or group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.gameVersion] - Requests matches where a specific or group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
-   * @param {number} [queryParameters.tier] - The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Premium, `3` - Professional.
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>} [queryParameters.tier] - The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Premium, `3` - Professional.
    * @param {number} [queryParameters.take] - The amount of matches that will be returned. <br />The max value is `250`.
    * @param {number} [queryParameters.skip] - The amount of matches that will be skipped before turning rows.
    * @returns {Promise<Match[]>} Promise object that resolves to JSON response represented by GET `/League/{id}/matches`.
    */
   async getLeagueByIdMatches(
     id: number | string,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: LeaguesByIdQuery,
   ): Promise<Match[]> {
     return await this._apiReq(`/league/${id}/matches`, 'GET', queryParameters);
   }
@@ -381,9 +395,9 @@ class Stratz {
    * @param {number[]} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-   * @param {0 | 1 | 2 | 3 | 4 | 255} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 255>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
    * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-   * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>Available values: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>} [queryParameters.tier] - Requests matches where the League tier matches. <br/>Available values: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
    * @param {number[]} [queryParameters.region = null] - A comma delimited array model of Region Ids. Leaving null will produce all regions.
    * @param {number[]} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
    * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
@@ -395,7 +409,7 @@ class Stratz {
    * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
    * @param {number[]} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
    * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-   * @param {0 | 1 | 2 | 3} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+   * @param {0 | 1 | 2 | 3[]} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
    * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
    * @param {number} [queryParameters.take] - The amount of matches that will be returned. <br />`The max value is 50`.
    * @param {number} [queryParameters.skip] - The amount of matches that will be skipped before turning rows.
@@ -403,7 +417,7 @@ class Stratz {
    */
   async getPlayerMatches(
     id: number | string,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: MatchQuery,
   ): Promise<MatchBreakdown[]> {
     return await this._apiReq(`/Player/${id}/matches`, 'GET', queryParameters);
   }
@@ -426,9 +440,9 @@ class Stratz {
    * @param {number[]} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-   * @param {0 | 1 | 2 | 3 | 4 | 255} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 255>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
    * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-   * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
    * @param {number[]} [queryParameters.region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
    * @param {number[]} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
    * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
@@ -440,14 +454,14 @@ class Stratz {
    * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
    * @param {number[]} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
    * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-   * @param {0 | 1 | 2 | 3} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+   * @param {0 | 1 | 2 | 3[]} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
    * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
    * @returns {Promise<HeroPerformance | HeroPerformance[]>} Promise object that resolves to JSON response represented by GET `/Player/{id}/heroPerformance/{heroId}`.
    */
   async getPlayerHeroPerformance(
     id: number | string,
     heroId?: number | string,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: HeroPerformanceQuery,
   ): Promise<HeroPerformance | HeroPerformance[]> {
     return await this._apiReq(
       `/player/${id}/heroPerformance/${heroId}`,
@@ -474,9 +488,9 @@ class Stratz {
    * @param {number[]} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-   * @param {0 | 1 | 2 | 3 | 4 | 255} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 255>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
    * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-   * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
    * @param {number[]} [queryParameters.region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
    * @param {number[]} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
    * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
@@ -488,14 +502,14 @@ class Stratz {
    * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
    * @param {number[]} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
    * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-   * @param {0 | 1 | 2 | 3} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+   * @param {0 | 1 | 2 | 3[]} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
    * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
    * @returns {Promise<HeroPerformance>} Promise object that resolves to JSON response represented by GET `/Player/{id}/heroPerformance/{heroId}`.
    */
   async getPlayerHeroPerformanceByHeroId(
     id: number | string,
     heroId: number | string,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: HeroPerformanceQuery,
   ): Promise<HeroPerformance> {
     return await this._apiReq(
       `/player/${id}/heroPerformance/${heroId}`,
@@ -561,9 +575,9 @@ class Stratz {
    * @param {number[]} [queryParameters.gameVersionId] - Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriends] - Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input.
    * @param {number[]} [queryParameters.withFriendsHero] - Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input.
-   * @param {0 | 1 | 2 | 3 | 4 | 255} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 255>} [queryParameters.lane = null] - Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`.
    * @param {number} [queryParameters.role = null] - Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`.
-   * @param {number} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+   * @param {Array<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9>} [queryParameters.tier] - Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
    * @param {number[]} [queryParameters.region = null] - A comma delimited `array` model of Region Ids. Leaving null will produce all regions.
    * @param {number[]} [queryParameters.rank] - "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input.
    * @param {number} [queryParameters.minDuration = null] - Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum.
@@ -575,13 +589,13 @@ class Stratz {
    * @param {boolean} [queryParameters.isParty] - Shows only matches where the user is in a party.
    * @param {number[]} [queryParameters.partyCount = true] - Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input.
    * @param {boolean} [queryParameters.isRadiant] - Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`.
-   * @param {0 | 1 | 2 | 3} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
+   * @param {0 | 1 | 2 | 3[]} [queryParameters.award] - Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`.
    * @param {boolean} [queryParameters.isTeam] - Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches.
    * @returns {Promise<PlayerSummary>} Promise object that resolves to JSON response represented by GET `/player/{id}/summary`.
    */
   async getPlayerSummary(
     id: number | string,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: PlayerSummaryQuery,
   ): Promise<PlayerSummary> {
     return await this._apiReq(`/player/${id}/summary`, 'GET', queryParameters);
   }
@@ -618,16 +632,16 @@ class Stratz {
    * @param {string} query - The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.`
    * @param {number} [queryParameters.minRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
    * @param {number} [queryParameters.maxRank] - Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc.
-   * @param {number[]} [queryParameters.leaderboardRegion] - A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input.
+   * @param {Array<0 | 1 | 2 | 3>} [queryParameters.leaderboardRegion] - A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input.
    * @param {number} [queryParameters.lastSeen] - The Epoc Datestamp of when the player must have played by.
-   * @param {number[]} [queryParameters.tiers] - Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`.
+   * @param {Array<1 | 2 | 3 | 4 | 5>} [queryParameters.tiers] - Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`.
    * @param {boolean} [queryParameters.isPro] - Used when searching Teams, if the Team is a professional team.
    * @param {number} [queryParameters.take] - Amount of results to be returned. <br />`Max is 150`.
    * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/Search`.
    */
   async getSearch(
     query: string | number,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: SearchQuery,
   ): Promise<any> {
     return await this._apiReq(`/Search`, 'GET', { query, ...queryParameters });
   }
@@ -644,7 +658,7 @@ class Stratz {
    */
   async getSearchByPlayer(
     query: string | number,
-    queryParameters?: ParsedUrlQueryInput,
+    queryParameters?: SearchByPlayerQuery,
   ): Promise<any> {
     return await this._apiReq(`/search/player`, 'GET', {
       query,
@@ -655,13 +669,13 @@ class Stratz {
   /**
    * The basic league search system for STRATZ.  Input a query and apply filters to limit the result set. There is over 50,000,000 names in the database. `Be specific`.
    * @param {string} query - The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.`
-   * @param {number[]} [tiers] - Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`.
+   * @param {Array<1 | 2 | 3 | 4 | 5>} [tiers] - Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`.
    * @param {number} [take] - Amount of results to be returned. <br />`Max is 150`.
    * @returns {Promise<any>} Promise object that resolves to JSON response represented by GET `/search/league`.
    */
   async getSearchByLeague(
     query: string | number,
-    tiers?: NumRange<1, 6>,
+    tiers?: Array<1 | 2 | 3 | 4 | 5>,
     take?: NumRange<0, 151>,
   ): Promise<any> {
     return await this._apiReq(`/search/league`, 'GET', { query, tiers, take });
@@ -744,20 +758,12 @@ class Stratz {
   async getHeroList(
     languageId: string | number = StratzLanguage.English,
     gameVersionId?: number,
-  ): Promise<
-    Array<{
-      heroId: number | string;
-      heroName: string;
-    }>
-  > {
+  ): Promise<HeroList[]> {
     const data: Record<string, Hero> = await this.getHeroes(
       languageId,
       gameVersionId,
     );
-    const extractedIdArray: Array<{
-      heroId: number | string;
-      heroName: string;
-    }> = [];
+    const extractedIdArray: HeroList[] = [];
 
     for (const id in data) {
       const heroId = data[id].id;
@@ -774,25 +780,17 @@ class Stratz {
    * List of All Abilities in the Dota 2 Game by Name and Ability ID.
    * @param {number} [languageId = StratzLanguage.English] - Language for the data to come back. Check [.getLanguages()](#Stratz+getLanguages) for the full list of avaliable languages. <br/>`If not specified`, the response will contain results `in English`.
    * @param {number} [gameVersionId] - Game Version ID matching [.getGameVersion()](#Stratz+getGameVersion). <br/>`If not specified`, the `latest version` data will be presented.
-   * @return {Promise} Promise object that resolves to JSON representation of a list of abilities.
+   * @return {Promise<AbilityList[]>} Promise object that resolves to JSON representation of a list of abilities.
    */
   async getAbilityList(
     languageId: string | number = StratzLanguage.English,
     gameVersionId?: number,
-  ): Promise<
-    Array<{
-      abilityId: number;
-      abilityName: string | undefined;
-    }>
-  > {
+  ): Promise<AbilityList[]> {
     const data: Record<string, Ability> = await this.getAbilities(
       languageId,
       gameVersionId,
     );
-    const extractedIdArray: Array<{
-      abilityId: number;
-      abilityName: string | undefined;
-    }> = [];
+    const extractedIdArray: AbilityList[] = [];
 
     for (const id in data) {
       const abilityId = data[id].id;
@@ -807,11 +805,11 @@ class Stratz {
 
   /**
    * Get the Latest Version of Dota 2 Game with different variations.
-   * @param {string} [outputType] - The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values.
-   * @return {Promise<number> | Promise<string> | Promise<object>} Promise object that resolves to a representation of a latest Dota 2 version.
+   * @param {'date' | 'name' | 'id'} [outputType] - The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values.
+   * @return {Promise<number | string | GameVersion | Date | undefined>} Promise object that resolves to a representation of a latest Dota 2 version.
    */
   async getLatestGameVersion(
-    outputType?: string,
+    outputType?: 'date' | 'name' | 'id',
   ): Promise<number | string | GameVersion | Date | undefined> {
     const data = await this.getGameVersion();
     if (data) {

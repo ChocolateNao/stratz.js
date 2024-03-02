@@ -56,10 +56,16 @@ A Minimalistic Node.js STRATZ REST API Wrapper.
 
 ## Installation
 
-**Node.js 16 or newer is required.**
+**Node.js 18 or newer is required.**
+
+Install it locally in your project folder:
 
 ```bash
 npm install stratz.js
+# Or Yarn
+yarn add stratz.js
+# Or pnpm
+pnpm add stratz.js
 ```
 
 ## Example
@@ -129,7 +135,7 @@ stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
 
 ## Development
 
-First of all, clone the repository and install dev-dependencies with `npm install` (or `pnpm install` or `yarn`). To run tests, you will need an API key:
+First of all, clone the repository and install dev-dependencies with `npm install` (or `pnpm add` or `yarn add`). To run tests, you will need an API key:
 
 ```bash
 # copy and edit the .env file
@@ -142,11 +148,11 @@ npm run test
 
 ## Building
 
-You can create a production version of the library.  
+You can create a production version of the library with the following command.
 *Note: This will also create a new documentation file.*
 
 ```bash
-npm run build
+npm run build:docs
 ```
 
 In case if you want only to either compile or make the documentation file:
@@ -156,10 +162,11 @@ In case if you want only to either compile or make the documentation file:
 npm run docs
 
 # for compilation
-npm run compile
+npm run build
 ```
 
 ## License
 
-[MIT](https://github.com/ChocolateNao/stratz.js/blob/master/LICENSE)  
+[MIT](https://github.com/ChocolateNao/stratz.js/blob/master/LICENSE)
+
 *This project is not affiliated with STRARZ in any way.*
