@@ -17,7 +17,8 @@
   },
   "scripts": {
     "build": "npm run clean && npm run compile",
-    "build:docs": "npm run clean && npm run compile && rm -f ./DOCS.md && jsdoc2md ./lib/index.js --separators > DOCS.md",
+    "build:docs": "npm run clean && npm run compile && npm run docs",
+    "docs": "rm -f ./DOCS.md && jsdoc2md ./lib/index.js --separators > DOCS.md",
     "clean": "rm -rf ./lib",
     "watch": "npm run build -- --watch src",
     "test": "jest --silent",
@@ -69,6 +70,6 @@
     "typescript": "^5.3.3"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   }
 }
