@@ -45,8 +45,8 @@
   - [stratz.getHeroById(\[id\], \[languageId\], \[gameVersionId\]) ⇒ Promise\<Hero\>](#stratzgetherobyidid-languageid-gameversionid--promisehero)
   - [stratz.getAbilityById(\[id\], \[languageId\], \[gameVersionId\]) ⇒ Promise\<(Ability|Record\<string, Ability\>)\>](#stratzgetabilitybyidid-languageid-gameversionid--promiseabilityrecordstring-ability)
   - [stratz.getHeroList(\[languageId\], \[gameVersionId\]) ⇒ Promise](#stratzgetherolistlanguageid-gameversionid--promise)
-  - [stratz.getAbilityList(\[languageId\], \[gameVersionId\]) ⇒ Promise](#stratzgetabilitylistlanguageid-gameversionid--promise)
-  - [stratz.getLatestGameVersion(\[outputType\]) ⇒ Promise\<number\> | Promise\<string\> | Promise\<object\>](#stratzgetlatestgameversionoutputtype--promisenumber--promisestring--promiseobject)
+  - [stratz.getAbilityList(\[languageId\], \[gameVersionId\]) ⇒ Promise\<Array\<AbilityList\>\>](#stratzgetabilitylistlanguageid-gameversionid--promisearrayabilitylist)
+  - [stratz.getLatestGameVersion(\[outputType\]) ⇒ Promise\<(number|string|GameVersion|Date|undefined)\>](#stratzgetlatestgameversionoutputtype--promisenumberstringgameversiondateundefined)
 
 
 * * *
@@ -82,7 +82,6 @@ Create a direct HTTP request to the STRATZ API.
 
 * * *
 
-<a name="Stratz+getAbilities"></a>
 <a name="Stratz+getAbilities"></a>
 
 ### stratz.getAbilities([languageId], [gameVersionId]) ⇒ <code>Record&lt;string, Ability&gt;</code>
@@ -139,7 +138,6 @@ Returns a list of GameMode types which is directly supplied by Dota 2. Matches A
 
 * * *
 
-<a name="Stratz+getHeroes"></a>
 <a name="Stratz+getHeroes"></a>
 
 ### stratz.getHeroes([languageId], [gameVersionId]) ⇒ <code>Promise&lt;Record&lt;string, Hero&gt;&gt;</code>
@@ -204,7 +202,6 @@ All information retaining to the Dota 2 Npcs by Game Version.
 * * *
 
 <a name="Stratz+getLeagues"></a>
-<a name="Stratz+getLeagues"></a>
 
 ### stratz.getLeagues() ⇒ <code>Promise&lt;Array&lt;League&gt;&gt;</code>
 Returns the list of Leagues limited by the queries.
@@ -214,7 +211,7 @@ Returns the list of Leagues limited by the queries.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [queryParameters.tier] | <code>Array&lt;number&gt;</code> | The type of league your requested limit by Dota 2 filter of Tier. Accepted : 1 - Amateur, 2 - Professional, 3 - DPC Minors (Premium), 4 - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
+| [queryParameters.tier] | <code>Array&lt;(0\|1\|2\|3\|4\|5\|6\|7\|8\|9)&gt;</code> | The type of league your requested limit by Dota 2 filter of Tier. Accepted : 1 - Amateur, 2 - Professional, 3 - DPC Minors (Premium), 4 - DPC Majors (Premium). <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
 | [queryParameters.skip] | <code>number</code> | The amount to skip before returning results. |
 | [queryParameters.take] | <code>number</code> | The amount of results to take. <br/>`Max amount 100`. |
 | [queryParameters.requireImage] | <code>boolean</code> | If the league must have an image to return. |
@@ -259,7 +256,7 @@ Return more data about a specific League.
 | [queryParameters.gameMode] | <code>string</code> | Requests matches where a specific or a group of [.getGameMode()](#Stratz+getGameMode) are present. This is a comma delimited `array` input. |
 | [queryParameters.lobbyType] | <code>string</code> | Requests matches where a specific or group of [.getGameMode()](#Stratz+getGameMode) are present. <br />This is a comma delimited `array` input. |
 | [queryParameters.gameVersion] | <code>Array&lt;number&gt;</code> | Requests matches where a specific or group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input. |
-| [queryParameters.tier] | <code>number</code> | The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Premium, `3` - Professional. |
+| [queryParameters.tier] | <code>Array&lt;(0\|1\|2\|3\|4\|5\|6\|7\|8\|9)&gt;</code> | The type of league your requested limit by Dota 2 filter of Tier. <br />Accepted: `1` - Amateur, `2` - Premium, `3` - Professional. |
 | [queryParameters.take] | <code>number</code> | The amount of matches that will be returned. <br />The max value is `250`. |
 | [queryParameters.skip] | <code>number</code> | The amount of matches that will be skipped before turning rows. |
 
@@ -430,9 +427,9 @@ Returns matches about a specific Steam Account ID.
 | [queryParameters.gameVersionId] | <code>Array&lt;number&gt;</code> |  | Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriends] | <code>Array&lt;number&gt;</code> |  | Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriendsHero] | <code>Array&lt;number&gt;</code> |  | Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input. |
-| [queryParameters.lane] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> \| <code>4</code> \| <code>255</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
+| [queryParameters.lane] | <code>Array&lt;(0\|1\|2\|3\|4\|255)&gt;</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
 | [queryParameters.role] | <code>number</code> | <code></code> | Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`. |
-| [queryParameters.tier] | <code>number</code> |  | Requests matches where the League tier matches. <br/>Available values: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
+| [queryParameters.tier] | <code>Array&lt;(0\|1\|2\|3\|4\|5\|6\|7\|8\|9)&gt;</code> |  | Requests matches where the League tier matches. <br/>Available values: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
 | [queryParameters.region] | <code>Array&lt;number&gt;</code> | <code></code> | A comma delimited array model of Region Ids. Leaving null will produce all regions. |
 | [queryParameters.rank] | <code>Array&lt;number&gt;</code> |  | "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input. |
 | [queryParameters.minDuration] | <code>number</code> | <code></code> | Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum. |
@@ -444,7 +441,7 @@ Returns matches about a specific Steam Account ID.
 | [queryParameters.isParty] | <code>boolean</code> |  | Shows only matches where the user is in a party. |
 | [queryParameters.partyCount] | <code>Array&lt;number&gt;</code> | <code>true</code> | Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input. |
 | [queryParameters.isRadiant] | <code>boolean</code> |  | Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`. |
-| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
+| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>Array&lt;3&gt;</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
 | [queryParameters.isTeam] | <code>boolean</code> |  | Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches. |
 | [queryParameters.take] | <code>number</code> |  | The amount of matches that will be returned. <br />`The max value is 50`. |
 | [queryParameters.skip] | <code>number</code> |  | The amount of matches that will be skipped before turning rows. |
@@ -478,9 +475,9 @@ Returns a list of all Heroes played by the Steam Account ID and contains data ab
 | [queryParameters.gameVersionId] | <code>Array&lt;number&gt;</code> |  | Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriends] | <code>Array&lt;number&gt;</code> |  | Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriendsHero] | <code>Array&lt;number&gt;</code> |  | Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input. |
-| [queryParameters.lane] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> \| <code>4</code> \| <code>255</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
+| [queryParameters.lane] | <code>Array&lt;(0\|1\|2\|3\|4\|255)&gt;</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
 | [queryParameters.role] | <code>number</code> | <code></code> | Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`. |
-| [queryParameters.tier] | <code>number</code> |  | Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
+| [queryParameters.tier] | <code>Array&lt;(0\|1\|2\|3\|4\|5\|6\|7\|8\|9)&gt;</code> |  | Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
 | [queryParameters.region] | <code>Array&lt;number&gt;</code> | <code></code> | A comma delimited `array` model of Region Ids. Leaving null will produce all regions. |
 | [queryParameters.rank] | <code>Array&lt;number&gt;</code> |  | "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input. |
 | [queryParameters.minDuration] | <code>number</code> | <code></code> | Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum. |
@@ -492,7 +489,7 @@ Returns a list of all Heroes played by the Steam Account ID and contains data ab
 | [queryParameters.isParty] | <code>boolean</code> |  | Shows only matches where the user is in a party. |
 | [queryParameters.partyCount] | <code>Array&lt;number&gt;</code> | <code>true</code> | Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input. |
 | [queryParameters.isRadiant] | <code>boolean</code> |  | Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`. |
-| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
+| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>Array&lt;3&gt;</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
 | [queryParameters.isTeam] | <code>boolean</code> |  | Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches. |
 
 
@@ -524,9 +521,9 @@ A more in depth at a single player's single hero performance.
 | [queryParameters.gameVersionId] | <code>Array&lt;number&gt;</code> |  | Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriends] | <code>Array&lt;number&gt;</code> |  | Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriendsHero] | <code>Array&lt;number&gt;</code> |  | Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input. |
-| [queryParameters.lane] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> \| <code>4</code> \| <code>255</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
+| [queryParameters.lane] | <code>Array&lt;(0\|1\|2\|3\|4\|255)&gt;</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
 | [queryParameters.role] | <code>number</code> | <code></code> | Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`. |
-| [queryParameters.tier] | <code>number</code> |  | Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
+| [queryParameters.tier] | <code>Array&lt;(0\|1\|2\|3\|4\|5\|6\|7\|8\|9)&gt;</code> |  | Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
 | [queryParameters.region] | <code>Array&lt;number&gt;</code> | <code></code> | A comma delimited `array` model of Region Ids. Leaving null will produce all regions. |
 | [queryParameters.rank] | <code>Array&lt;number&gt;</code> |  | "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input. |
 | [queryParameters.minDuration] | <code>number</code> | <code></code> | Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum. |
@@ -538,7 +535,7 @@ A more in depth at a single player's single hero performance.
 | [queryParameters.isParty] | <code>boolean</code> |  | Shows only matches where the user is in a party. |
 | [queryParameters.partyCount] | <code>Array&lt;number&gt;</code> | <code>true</code> | Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input. |
 | [queryParameters.isRadiant] | <code>boolean</code> |  | Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`. |
-| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
+| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>Array&lt;3&gt;</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
 | [queryParameters.isTeam] | <code>boolean</code> |  | Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches. |
 
 
@@ -555,7 +552,7 @@ Gets the Players of Dota which have DotaPlus and have a high level hero.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [heroId] | <code>number</code> |  | If you want to limit to a single HeroId to find awards. <br />It can be found at [.getGameVersion()](#Stratz+getGameVersion). |
-| [orderBy] | <code>string</code> |  | Helps with the ordering. <br />Accepted values are `recent` (Shows the most recent awards given) and `level` (showes by the highest level first). |
+| [orderBy] | <code>string</code> |  | Helps with the ordering. Accepted values are `recent` (Shows the most recent awards given) and `level` (showes by the highest level first). |
 | [skip] | <code>number</code> | <code>0</code> | Amount of records you want to skip before starting. |
 | [take] | <code>number</code> | <code>20</code> | Amount of total records you want to take. <br />Maximum amount is `100`. |
 
@@ -613,9 +610,9 @@ Returns a list of all Heroes played by the Steam Account ID and contains data ab
 | [queryParameters.gameVersionId] | <code>Array&lt;number&gt;</code> |  | Requests matches where a specific or a group of [.getGameVersion()](#Stratz+getGameVersion) are present. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriends] | <code>Array&lt;number&gt;</code> |  | Request matches where the friend Steam Account ID must be present. More than one value requires that all players must exist in the match. <br />This is a comma delimited `array` input. |
 | [queryParameters.withFriendsHero] | <code>Array&lt;number&gt;</code> |  | Requests matches where the friend must be playing the specific hero. Must have the same array length as withFriends. <br />This is a comma delimited `array` input. |
-| [queryParameters.lane] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> \| <code>4</code> \| <code>255</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
+| [queryParameters.lane] | <code>Array&lt;(0\|1\|2\|3\|4\|255)&gt;</code> | <code></code> | Requests matches where the SteamId played in a specific lane. Default is null which returns all lanes. <br />This is a comma delimited `array` input. <br />Available values : `0, 1, 2, 3, 4, 255`. |
 | [queryParameters.role] | <code>number</code> | <code></code> | Requests matches where the SteamId played in a specific Role. (Core/Support). <br />Default is null which returns both roles. <br />Available values: `0, 1, 2, 255`. |
-| [queryParameters.tier] | <code>number</code> |  | Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
+| [queryParameters.tier] | <code>Array&lt;(0\|1\|2\|3\|4\|5\|6\|7\|8\|9)&gt;</code> |  | Requests matches where the League tier matches. <br/>`Available values : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9` |
 | [queryParameters.region] | <code>Array&lt;number&gt;</code> | <code></code> | A comma delimited `array` model of Region Ids. Leaving null will produce all regions. |
 | [queryParameters.rank] | <code>Array&lt;number&gt;</code> |  | "Requests matches where the average Rank of the match is in the bracket. Enter 0 for unknown average rank. Followed by 1-7 for each Dota 2 Rank. <br />This is a comma delimited `array` input. |
 | [queryParameters.minDuration] | <code>number</code> | <code></code> | Requests matches where the match is no longer than this many minutes. <br />Default is null and there is no minimum. |
@@ -627,7 +624,7 @@ Returns a list of all Heroes played by the Steam Account ID and contains data ab
 | [queryParameters.isParty] | <code>boolean</code> |  | Shows only matches where the user is in a party. |
 | [queryParameters.partyCount] | <code>Array&lt;number&gt;</code> | <code>true</code> | Matches where the user is in a party with this many friends. <br />This is a comma delimited `array` input. |
 | [queryParameters.isRadiant] | <code>boolean</code> |  | Matches where the user is on the Radiant Faction. Default is null which shows both factions. <br />`Set to false for Dire`. |
-| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>3</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
+| [queryParameters.award] | <code>0</code> \| <code>1</code> \| <code>2</code> \| <code>Array&lt;3&gt;</code> |  | Matches where the user gets a specific award. <br />This is a comma delimited `array` input. <br />Available values: `0, 1, 2, 3`. |
 | [queryParameters.isTeam] | <code>boolean</code> |  | Requests matches where they are on a team if any kind. <br />Default takes both team and non-team matches. |
 
 
@@ -681,9 +678,9 @@ The basic search system for STRATZ.  Input a query and apply filters to limit th
 | query | <code>string</code> | The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.` |
 | [queryParameters.minRank] | <code>number</code> | Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc. |
 | [queryParameters.maxRank] | <code>number</code> | Value of the current badge for a Player. 80 is Immortal, 70 Divine, etc. |
-| [queryParameters.leaderboardRegion] | <code>Array&lt;number&gt;</code> | A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input. |
+| [queryParameters.leaderboardRegion] | <code>Array&lt;(0\|1\|2\|3)&gt;</code> | A list of Leaderboard Region Values. <br />`0 America, 1 SE Asia, 2 Europe, 3 China`. This is a comma delimited `array` input. |
 | [queryParameters.lastSeen] | <code>number</code> | The Epoc Datestamp of when the player must have played by. |
-| [queryParameters.tiers] | <code>Array&lt;number&gt;</code> | Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`. |
+| [queryParameters.tiers] | <code>Array&lt;(1\|2\|3\|4\|5)&gt;</code> | Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`. |
 | [queryParameters.isPro] | <code>boolean</code> | Used when searching Teams, if the Team is a professional team. |
 | [queryParameters.take] | <code>number</code> | Amount of results to be returned. <br />`Max is 150`. |
 
@@ -721,7 +718,7 @@ The basic league search system for STRATZ.  Input a query and apply filters to l
 | Param | Type | Description |
 | --- | --- | --- |
 | query | <code>string</code> | The text query you wish to search on. <br />Minimum input is `2 characters`. <br/>`Required.` |
-| [tiers] | <code>Array&lt;number&gt;</code> | Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`. |
+| [tiers] | <code>Array&lt;(1\|2\|3\|4\|5)&gt;</code> | Used when searching Leagues. <br />`1 Amateur, 2 Professional, 3 Premium, 4 and 5 are Pro Circuit`. |
 | [take] | <code>number</code> | Amount of results to be returned. <br />`Max is 150`. |
 
 
@@ -811,11 +808,11 @@ List of All Heroes in the Dota 2 Game by Name and Hero ID.
 
 <a name="Stratz+getAbilityList"></a>
 
-### stratz.getAbilityList([languageId], [gameVersionId]) ⇒ <code>Promise</code>
+### stratz.getAbilityList([languageId], [gameVersionId]) ⇒ <code>Promise&lt;Array&lt;AbilityList&gt;&gt;</code>
 List of All Abilities in the Dota 2 Game by Name and Ability ID.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
-**Returns**: <code>Promise</code> - Promise object that resolves to JSON representation of a list of abilities.  
+**Returns**: <code>Promise&lt;Array&lt;AbilityList&gt;&gt;</code> - Promise object that resolves to JSON representation of a list of abilities.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -827,15 +824,15 @@ List of All Abilities in the Dota 2 Game by Name and Ability ID.
 
 <a name="Stratz+getLatestGameVersion"></a>
 
-### stratz.getLatestGameVersion([outputType]) ⇒ <code>Promise&lt;number&gt;</code> \| <code>Promise&lt;string&gt;</code> \| <code>Promise&lt;object&gt;</code>
+### stratz.getLatestGameVersion([outputType]) ⇒ <code>Promise&lt;(number\|string\|GameVersion\|Date\|undefined)&gt;</code>
 Get the Latest Version of Dota 2 Game with different variations.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
-**Returns**: <code>Promise&lt;number&gt;</code> \| <code>Promise&lt;string&gt;</code> \| <code>Promise&lt;object&gt;</code> - Promise object that resolves to a representation of a latest Dota 2 version.  
+**Returns**: <code>Promise&lt;(number\|string\|GameVersion\|Date\|undefined)&gt;</code> - Promise object that resolves to a representation of a latest Dota 2 version.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [outputType] | <code>string</code> | The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values. |
+| [outputType] | <code>&#x27;date&#x27;</code> \| <code>&#x27;name&#x27;</code> \| <code>&#x27;id&#x27;</code> | The type of the value returned. <br />Accepted: `"date"`, `"name"`, `"id"` as strings. <br /> If not specified, returns an object with all these values. |
 
 
 * * *
