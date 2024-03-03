@@ -5,7 +5,7 @@ const config: Config = {
   testEnvironment: 'node',
   testMatch: ['<rootDir>/tests/**/*.test.ts'],
   testTimeout: 10000,
-  coverageReporters: ['text'],
+  coverageReporters: ['text', 'cobertura'],
   bail: 1,
   forceExit: true,
 };

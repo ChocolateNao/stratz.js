@@ -7,6 +7,8 @@
     <img src="https://img.shields.io/github/actions/workflow/status/ChocolateNao/stratz.js/npm-publish.yml" /></a>
   <a href="https://www.npmjs.com/package/stratz.js">
     <img src="https://img.shields.io/badge/types-TypeScript-blue" /></a>
+  <a href="https://codecov.io/gh/ChocolateNao/stratz.js" > 
+ <img src="https://img.shields.io/codecov/c/github/ChocolateNao/stratz.js"/></a>
   <a href="https://github.com/ChocolateNao/stratz.js/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/ChocolateNao/stratz.js.svg" /></a>
 </div>
