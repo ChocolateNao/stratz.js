@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 .github/
+.husky/
 
 # Logs
 logs/
@@ -22,6 +23,12 @@ DOCS.md
 notes.txt
 .env
 .env.example
+.eslintignore
+.eslintrc.json
+.lintstagedrc.json
+.prettierignore
+.prettierrc.json
+jest.config.ts
 
 # Build
 *.tgz
