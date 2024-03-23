@@ -1,6 +1,6 @@
 {
   "name": "stratz.js",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "A Node.js STRATZ REST API wrapper",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
