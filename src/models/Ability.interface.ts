@@ -1,13 +1,13 @@
 export interface Ability {
   id: number;
   name?: string;
-  language: Language;
-  stat?: Stat;
+  language: AbilityLanguage;
+  stat?: AbilityStat;
   isTalent: boolean;
   uri?: string;
 }
 
-interface Language {
+interface AbilityLanguage {
   abilityId: number;
   gameVersionId: number;
   languageId: number;
@@ -20,7 +20,7 @@ interface Language {
   aghanimDescription?: string;
 }
 
-interface Stat {
+interface AbilityStat {
   abilityId: number;
   gameVersionId: number;
   type: number;
