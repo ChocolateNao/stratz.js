@@ -1,9 +1,10 @@
 import type { IncomingMessage } from 'node:http';
 import https from 'node:https';
-import type { ParsedUrlQueryInput } from 'querystring';
-import querystring from 'querystring';
+import type { ParsedUrlQueryInput } from 'node:querystring';
+import querystring from 'node:querystring';
 
 import { StratzLanguage } from './enums/StratzLanguage.enum';
+import { HttpException } from './exceptions/http.exception';
 import type { Ability } from './models/Ability.interface';
 import type { Cluster } from './models/Cluster.interface';
 import type { AbilityList, HeroList } from './models/DataList.interface';
@@ -67,7 +68,7 @@ class Stratz {
    * @param {string} path - Endpoint path.
    * @param {string} method - HTTPS method.
    * @param {*} [queryParameters] - Query parameters for the request.
-   * @return {Promise<any>} Promise object that resolves with the result object of the HTTPS request.
+   * @return {Promise<HttpExceptionBody | any>} Promise object that resolves with the result object of the HTTPS request OR the error object of type `HttpExceptionBody`.
    */
   private async _apiReq(
     path: string,
@@ -105,28 +106,32 @@ class Stratz {
 
           response.on('end', () => {
             if (response.statusCode === 302) {
-              resolve({ status: 'Found' });
+              resolve({ statusCode: response.statusCode, message: 'Found' });
+            }
+            if (response.statusCode === 204) {
+              reject(
+                new HttpException(
+                  response.statusCode,
+                  'No Content',
+                  'The request was processed but no content was found with given parameters',
+                ).initBody(),
+              );
             }
             if (
               response.statusCode &&
+              response.statusCode !== 204 &&
               response.statusCode >= 200 &&
               response.statusCode < 300
             ) {
               resolve(JSON.parse(data));
             } else {
-              reject(
-                new Error(
-                  `HTTPS request failed with status code ${response.statusCode}`,
-                ),
-              );
+              reject(new HttpException(response.statusCode ?? 500).initBody());
             }
           });
 
           response.on('error', (error: string) => {
             reject(
-              new Error(
-                `HTTPS request failed with status code ${response.statusCode} with an error: ${error}`,
-              ),
+              new HttpException(response.statusCode ?? 500, error).initBody(),
             );
           });
         })
