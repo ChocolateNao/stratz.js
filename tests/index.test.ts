@@ -96,9 +96,13 @@ describe('Stratz.js Unit Tests', () => {
     expect(result).toBeDefined();
   });
 
-  test('Get Player', async () => {
+  test('Get Player with Valid ID', async () => {
     const result = await api.getPlayer(STEAM_ID);
     expect(result).toBeDefined();
+  });
+
+  test('Get Player with Invalid ID', async () => {
+    expect(async () => await api.getPlayer(121212)).rejects.toHaveProperty('isError', true);
   });
 
   test('Get Player Basic Info', async () => {
@@ -135,7 +139,7 @@ describe('Stratz.js Unit Tests', () => {
   });
 
   test('Get Played With Pro', async () => {
-    await expect(async () => await api.getPlayedWithPro(STEAM_ID)).rejects.toThrow();
+    await expect(async () => await api.getPlayedWithPro(STEAM_ID)).rejects.toHaveProperty('isError', true);
   });
 
   test('Get Player Summary', async () => {

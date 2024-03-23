@@ -2,21 +2,21 @@ export interface Hero {
   id: number;
   name: string;
   shortName: string;
-  stat: Stat;
+  stat: HeroStat;
   aliases: string[];
   displayName?: string;
-  abilities?: Ability[];
+  abilities?: HeroAbility[];
   roles?: Role[];
   talents?: Talent[];
-  language?: Language;
+  language?: HeroLanguage;
 }
 
-interface Ability {
+interface HeroAbility {
   slot: number;
   abilityId: number;
 }
 
-interface Language {
+interface HeroLanguage {
   heroId: number;
   gameVersionId: number;
   languageId: number;
@@ -30,7 +30,7 @@ interface Role {
   level: number;
 }
 
-interface Stat {
+interface HeroStat {
   gameVersionId: number;
   enabled?: boolean;
   heroUnlockOrder?: number;

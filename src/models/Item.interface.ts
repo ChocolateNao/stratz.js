@@ -3,8 +3,8 @@ export interface Item {
   name: string;
   displayName?: string;
   shortName: string;
-  language: Language;
-  stat?: Stat;
+  language: ItemLanguage;
+  stat?: ItemStat;
   image?: string;
   isInNeuralNetwork: boolean;
   isFullItemHeroPurchaseItem: boolean;
@@ -17,7 +17,7 @@ interface Component {
   componentId: number;
 }
 
-interface Language {
+interface ItemLanguage {
   displayName: string;
   lore: string[];
   description: string[];
@@ -25,7 +25,7 @@ interface Language {
   attributes: string[];
 }
 
-interface Stat {
+interface ItemStat {
   behavior: number;
   unitTargetType: number;
   unitTargetTeam: number;
