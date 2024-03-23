@@ -5,7 +5,7 @@
 
 - [Stratz](#stratz)
   - [new Stratz(apiToken)](#new-stratzapitoken)
-  - [stratz.\_apiReq(path, method, \[queryParameters\]) ⇒ Promise\<any\>](#stratz_apireqpath-method-queryparameters--promiseany)
+  - [stratz.\_apiReq(path, method, \[queryParameters\]) ⇒ Promise\<(HttpExceptionBody|any)\>](#stratz_apireqpath-method-queryparameters--promisehttpexceptionbodyany)
   - [stratz.getAbilities(\[languageId\], \[gameVersionId\]) ⇒ Record\<string, Ability\>](#stratzgetabilitieslanguageid-gameversionid--recordstring-ability)
   - [stratz.getGameVersion() ⇒ Promise\<Array\<GameVersion\>\>](#stratzgetgameversion--promisearraygameversion)
   - [stratz.getLanguages() ⇒ Promise\<Record\<string, string\>\>](#stratzgetlanguages--promiserecordstring-string)
@@ -66,11 +66,11 @@ Create a new instance of STRATZ REST API wrapper. This is the first thing you do
 
 <a name="Stratz+_apiReq"></a>
 
-### stratz.\_apiReq(path, method, [queryParameters]) ⇒ <code>Promise&lt;any&gt;</code>
+### stratz.\_apiReq(path, method, [queryParameters]) ⇒ <code>Promise&lt;(HttpExceptionBody\|any)&gt;</code>
 Create a direct HTTP request to the STRATZ API.
 
 **Kind**: instance method of [<code>Stratz</code>](#Stratz)  
-**Returns**: <code>Promise&lt;any&gt;</code> - Promise object that resolves with the result object of the HTTPS request.  
+**Returns**: <code>Promise&lt;(HttpExceptionBody\|any)&gt;</code> - Promise object that resolves with the result object of the HTTPS request OR the error object of type `HttpExceptionBody`.  
 **Internal**:   
 
 | Param | Type | Description |

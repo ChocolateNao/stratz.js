@@ -125,19 +125,25 @@ stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
     console.log(err);;
 });
 
-// Handling queryParameters
-stratz.getPlayerSummary(282424658, { gameMode: 2 }) // in a form of an object
-.then((result) => {
-    console.log(result);
-})
-.catch((err) => {
-    console.log(err);;
-});
+// Handling errors. All errors will match the HttpExceptionBody type
+try {
+  const data = await api.getPlayer(121212);
+  console.log(data);
+} catch (error) {
+  const e = error as HttpExceptionBody;
+  console.log(e);
+}
+// {
+//   isError: true,
+//   status: 204,
+//   message: 'No Content',
+//   description: 'The request was processed but no content was found with given parameters'
+// }
 ```
 
 ## Development
 
-First of all, clone the repository and install dev-dependencies with `npm install` (or `pnpm add` or `yarn add`). To run tests, you will need an API key:
+First of all, clone the repository and install dev-dependencies with `npm install` (or `pnpm install` or `yarn install`). To run tests, you will need an API key:
 
 ```bash
 # copy and edit the .env file
@@ -151,6 +157,7 @@ npm run test
 ## Building
 
 You can create a production version of the library with the following command.
+
 *Note: This will also create a new documentation file.*
 
 ```bash
