@@ -1,4 +1,8 @@
-# stratz.js
+# ⚠️ Deprecation Notice
+
+⚠️ __The STRATZ team completely [moved away](https://stratz.com/api) from the REST API. This package is no longer needed. Use the [GraphQL alternative](https://api.stratz.com/graphiql).__ ⚠️
+
+## stratz.js
 
 <div align="center">
   <a href="https://github.com/ChocolateNao/stratz.js">
